@@ -1,0 +1,15 @@
+\chapter{Models}
+The first deep learning-based object detection models emerged after a breakthrough in ImageNet Large Scale Visual Recognition Challenge (ILSVRC) in 2012 when Alex Krizhevesky et al. proposed a deep and wide CNN classification model. The so-called AlexNet outperformed traditional state-of-the-art models.  This architecture was later exploited as a feature extractor for the CNN-based object detection model R-CNN, which also surpassed the previous best results on PASCAL VOC 2012. Since then, many CNN-based object detection models were introduced. Generally, they can be categorized into two types: one-stage detectors and two-stage detectors. The latter approach consists of a regional proposal step, followed by classification and bounding box regression. This means that the model initially generates interesting regions, which are then analyzed one-by-one. In contrast, one-stage detectors are based on a global regression and classification, requiring a single pass through the network, and thus they are usually faster but less accurate. A common property of both approaches is that we can easily substitute the models' feature extractor. 
+
+For our comparison, we have chosen three state-of-the-art models: Faster R-CNN, Cascade R-CNN, and RetinaNet. The first one was proposed in 2015, and it is a well-known example of two-stage detectors. The model is considered to be well-established as it has a reasonable accuracy/speed tradeoff and is easy to modify. In our work, Faster R-CNN serves as a baseline for our comparison. The next one, Cascade R-CNN, is an extension to Faster R-CNN, which improves the performance by addressing some of its caveats. Finally, RetinaNet is a recent one-stage detector introduced by the Facebook AI Research team (FAIR), aiming to match the two-stage detectors' accuracy while preserving one-stage detectors' speed. We describe all these models in detail in the following sections.
+
+\begin{itemize}
+\item General architecture
+\begin{itemize}
+\item Backbone
+\item FPN
+\end{itemize}
+\item Faster R-CNN
+\item Cascade R-CNN
+\item RetinaNet
+\end{itemize}

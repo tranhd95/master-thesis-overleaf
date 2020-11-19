@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Deep Learning}
+\chapter{Deep Learning}\label{deep_learning_chapter}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Neural networks since 60s
@@ -9,20 +9,117 @@
   % Based on ANN
 % Impact
 
-In this chapter I briefly introduce the field of deep learning. I assume previous knowledge of basics of machine learning.
-All the concepts in this chapter are very well described in a book written by the pioneers of deep learning Ian Goodfellow, 
-Yoshua Bengio and Aaron Courville /cite{Goodfellow-et-al-2016}. The historical development of artficial neural networks and
-deep learning is nicely overviewd in a journal article by another important figure of the field Juergen Schmidhuber 
+In this chapter, we will briefly introduce some of the relevant topics of deep learning to the reader. We assume previous knowledge of the basics of machine learning and artificial neural networks (ANNs). All concepts in this chapter are very well described in the book written by the pioneers of deep learning, Ian Goodfellow, Yoshua Bengio, and Aaron Courville \cite{Goodfellow-et-al-2016}. 
+
+The history of ANNs can be dated back to the 1940s \cite{McCulloch_1943}. However, only since 2006, deep architectures of ANN have become a trendy area of machine learning research \cite{DBLP:journals/corr/Schmidhuber14}. That year, Hinton et al. introduced unsupervised pre-training of deep feedforward neural networks. Using this method on a deep belief network \cite{DBN}, the model achieved 1.2\% error rate on the MNIST classification dataset \cite{mnist}. This exceptional result drew attention to deep belief networks. The historical development of artificial neural networks and deep learning is nicely overviewed in a journal article by another important figure in the field Juergen Schmidhuber 
 \cite{DBLP:journals/corr/Schmidhuber14}.
 
-The history of artificial neural network (ANN) can be dated back to 1940s /cite{McCulloch_1943}. But only since 2006, deep 
-architectures of ANN have become very popular area of machine learning research /cite{DBLP:journals/corr/Schmidhuber14}. It was
-when Hinton et al. introduced unsupervised pre-training of deep feedforward neural networks. By using this method on a deep belief
-network [DBN CITATION], the model achiev 1.2% error rate on the MNIST classification dataset [MNIST CITATION]. This exceptional 
-result helped to draw attention to deep belief networks.
-
 \section{Definition}
-So what is deep learning? There are many closely related abstract definitions, that are summarized in /cite{mic_definitions}. 
-I cite the one that is most suitable for this work. 
+Firstly, let us define the field of deep learning. Many of closely related definitions are summarized in \cite{mic_definitions}. We cite the one that best suits the nature of this work.  
+    
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition}
+\begin{definition}
+A class of machine learning techniques that exploit \textbf{many} layers of non-linear information processing for supervised or unsupervised feature extraction and transformation, and for pattern analysis and classification.
+\end{definition}
 
-Definition
+In our case, the deep learning technique will be used for object detection, which also consists of the classification task. The selected object detection models are deep architectures of \textbf{convolutional neural network (CNN)}, which are particularly effective for image processing tasks. In the coming section, we will briefly describe the foundations of CNNs. 
+
+\section{Convolutional Neural Network}
+Deep neural networks are organized into multiple layers, which are typically sequentially ordered. In the following subsections, we will describe layers that we can find in CNNs.
+
+\subsection{Fully-connected Layer}
+The most basic layer is \textbf{fully-connected layer} (also known as \textbf{linear} or \textbf{dense} layer). It performs a transformation from \textbf{input vector} $\boldsymbol{x}$ of size $m$ into \textbf{output vector} $\boldsymbol{y}$ of size $n$. The transformation has two parameters, a \textbf{weight matrix} $\boldsymbol{W}$ of size $m \times n$ and \textbf{bias} $\boldsymbol{b}$ of size $n$. Firstly, the input vector is weighted by $W$, then the bias is added, and finally an \textbf{activation function} $\boldsymbol{f}$ is applied to every element (see subsection \ref{afunctions} for more details on activation functions).
+$$
+y = f(W\cdot x + b)
+$$
+See figure \ref{fig:fcl} for a graph representation of a neural network composed of two fully-connected layers, where each node is a neuron, and each directed edge is a weight.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=4cm]{Sources/Figures/fully_connected_layer.png}
+    \caption{Multilayer Perceptron with two fully-connected layers. Taken from \cite{nielsenneural}.}
+    \label{fig:fcl}
+\end{figure}
+
+\subsection{Convolution Layer}
+The most important layer of CNNs is the \textbf{convolution layer}. It introduces a new concept of shared weights, which help us train deeper architectures and is more suited for image processing tasks. To illustrate the convolution layer, imagine the input as a square of neurons, i.e., a two-dimensional \textbf{image} $\boldsymbol{I: (W, H) \rightarrow \real}$, where ${W}$ is the width and ${H}$ is the height of the image. 
+
+In contrast with a fully-connected layer, we do not connect every input neuron to every output neuron. Instead, every output neuron is associated with a smaller region in the input image. Each association is defined by its \textbf{bias} $\boldsymbol{b}$ and $\textbf{weights}$ $\boldsymbol{K:(K_w, K_h) \rightarrow \real}$, where $K_w$, $K_h$ is the region's width and height. The output of the layer is a downscaled image $\boldsymbol{Y:(W - K_w + 1,}$ $\boldsymbol{H - K_h + 1)  \rightarrow \real}$, which is often called a \textbf{feature map}. The value of the $i, j$-th output neuron $Y(i,j)$ is defined by: 
+$$
+Y(i, j) = f\left((I * K)(i,j) + b\right)
+$$
+
+The $*$ operation is called \textbf{convolution} and is defined as follows:
+
+$$
+(I * K)(x, y) = \sum\limits_{k = 1}^{K_w}\sum\limits_{l = 1}^{K_h} I(x + k, y + l) \cdot K(k, l)
+$$
+
+This process is applied to the whole input image (see figure \ref{fig:convolution}). The convenience of this method comes with using the same weights $K$ for each convolution operation. The weights $K$ (and also bias $b$) are called \textbf{kernel} or \textbf{filter}. The kernel is trained to detect some non-linear pattern. Therefore, we use multiple kernels to recognize various features in the image (we end up with multiple feature maps). The approach also helps CNNs to adapt to image \textbf{translation invariance}, i.e., the detected features do not depend on their positions in the input image.
+
+For illustration purpose, we have considered a two-dimensional inputs. However, in practice, we often work with RGB or even RGB-D images represented by \textbf{tensors} of shape $(W, H, C)$, where $C$ is number of channels (e.g. three for classic RGB image). 
+
+Another important parameter of the layer is \textbf{stride length}. It defines the number of pixels the filters shifts over the input image. The bigger is stride length the more downscaled the output image is.
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=10cm]{Sources/Figures/convolution.png}
+    \caption{Illustration of a convolution layer with 5 $\times$ 5 kernel. Taken from \cite{nielsenneural}.}
+    \label{fig:convolution}
+\end{figure}
+
+\subsection{Pooling Layer}
+Another essential layer for CNNs is the \textbf{pooling layer}. In CNN architectures, the pooling layers typically come after the convolution layers. They are used for downscaling the feature maps to reduce the number of network parameters. 
+
+The layer works in a similar manner to the convolution layer. It takes multiple values from a pooling region and outputs a single pixel. The most common type of a~ pooling operation is \textbf{max pooling}, which outputs the region's maximum value. Another operation that can be applied to the region is \textbf{average pooling}, which outputs the region's mean value.
+
+The pooling region's shape is typically 2 $\times$ 2. In some cases, we want to pool from the whole input. We call these operations \textbf{global poolings} (e.g., global max pooling).
+
+\subsection{Activation Functions}
+\label{afunctions}
+
+Activation functions introduce non-linearity to the layers. Some of the most important ones are listed below:
+\begin{itemize}
+\item \textbf{ReLU} (rectified linear unit) is the most popular activation function, which was introduced in \cite{pmlr-v15-glorot11a}. It is defined as follows: $\text{ReLU}(x) = \max(0, x)$. It deals better with vanishing gradient than sigmoidal functions, which tend to saturates on extreme values.
+\item \textbf{Leaky ReLU} deals with the so-called \textbf{dying ReLU problem}. If we use simple ReLU, many neurons cannot recover from being stuck at zero value. We can tackle the problem by "leaking out" the negative values. The leaked values are then weighted by parameter $\alpha$: $\text{Leaky ReLU}(x) = \max(\alpha x, x)$
+\item \textbf{Softmax} funciton is typically used in a last layer of classification neural networks. It takes a vector of real numbers and normalizes the values into a probability distribution. For input vector $x \in \real^K$ and output vector $y \in \real^K$, the function is defined as follows:
+$$
+    y_i = \text{softmax}(x)_i = \frac{e^{x_i}}{\sum\limits^{K}_{j = 1} e^{x_j}} \text{ for } i = 1,...,K
+$$
+\end{itemize}
+
+\section{Overfitting and underfitting}
+
+When we train a machine learning model, we typically have a \textbf{training set} and a \textbf{test set}. We then fit the model's parameters on a training set to \textbf{minimize} an error measure (a \textbf{training loss} or \textbf{error}). However, at the same time, we want to minimize a \textbf{test error} as well. We say that a model should \textbf{generalize}. This means that it should perform well on unseen data.
+
+These efforts can lead to two major problems in machine learning. If we train for too long, the model will learn the training set patterns that do not generalize to the test set. We say that the model \textbf{overfits}. The opposite of overfitting is \textbf{underfitting}. It occurs when the model is not able to gain sufficiently low training loss. Underfitting can happen because of using a weak model or not training long enough. If we plot the losses, we want to make sure that the training loss is reasonably low, and the gap between training and test error is small (see figure \ref{fig:loss_plot}).
+ 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{Sources/Figures/fitting.png}
+    \caption{A simplified cases of loss curves \protect\footnotemark showing: (A) Underfitting, (B) Overfitting and (C) Optimal fit. Taken from \cite{bileschi2020deep}.}
+    \label{fig:loss_plot}
+\end{figure}
+
+\footnotetext{The terms validation and test set are sometimes used interchangeably. However, the true meaning is not important for the illustration. Both are unobserved data.}
+
+In coming subsections we describe the most common techniques to prevent overfitting in neural networks.
+\footnotetext[2]{The simplest explanation is most likely the right one.}
+\subsection{$L_2$ Regularization}
+Following the Occam's razor principle\footnotemark , the extreme weights are likely to cause overfitting. We can reduce the overfitting by penalizing these weights with $\boldsymbol{L_2}$ \textbf{regularization}. The penalization is performed by adding a $L_2$ term to the loss function. The term is defined as a sum of squares of weight values. 
+
+
+
+\subsection{Dropout}
+Another common technique is called \textbf{dropout}. This method prevents individual nodes in the network to rely on the output of other nodes by randomly "dropping out" or "deactivating" some of the neurons. The method's parameter is a number between 0 and 1 that defines the fraction of the input units to drop.
+
+\subsection{Batch Normalization}
+Deep neural networks often suffer from unstability. Small changes in layers close to the input amplify as they propagate through the network. The deeper layers have to adapt significantly and thus learn slowly. \textbf{Batch normalization} introduces a way to stabilize and accelerate the training speed by normalizing the outputs of previous layer by subtracting the batch mean and dividing by the batch standard deviation.
+
+\subsection{Data Augmentation}
+The most obvious way to train a robust model is to have an extensive dataset. However, in some cases, it is very challenging to acquire sufficient ammount of data. We can overcome this issue by 
+\textbf{augmenting} the training set by generating new artificial data. Of course, it is impossible to adopt this approach to every type of datasets, but it is straightforward for object detection tasks. The simplest way to augment the image dataset is by adding \textbf{random transformations} (cropping, resizing, rotation, ...) of the original images. The more sophisticated method would be generating new \textbf{synthetic} images. With recent advances in generative adversarial networks (GANs), it is possible to synthesize high-quality images. An impressive adoption of this approach is proposed in \cite{wei2019generative}.
+
+
