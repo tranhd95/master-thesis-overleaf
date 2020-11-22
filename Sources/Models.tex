@@ -61,7 +61,7 @@ The first model we describe is Faster R-CNN proposed in 2015 by the same co-auth
 As we can see, Faster R-CNN firstly computes the feature maps, which are then exploited by two separate computational branches. The region proposal is carried out by a Regional Proposal Network (RPN). The corresponding features of the proposed RoIs are retrieved from the bottom branch's feature maps by a method called RoI pooling. The proposals' feature maps are then fed to the fully-connected network responsible for the final category (class) and bounding box prediction. We describe each component in detail below.
 
 \subsection{Region Proposal Network}
-Most of the RPN's architecture looks like a standard CNN image classifier. The network does not predict the raw coordinates, but instead, it learns to predict offsets of reference boxes. We call these reference boxes anchors, and we place them on every point in the feature map (see Figure \ref{fig:rpn}). Each point has several anchors of different sizes and ratios. We predict an "objectness" score for each anchor, which is the anchor's probability of being an object. At the same time, we regress the offsets of the anchors. Since we now have a large set of proposals that can overlap, we apply Non-Maximum Suppression (NMS) to solve the issue of duplicates. NMS is a greedy method that goes through the list of proposals sorted by score and removes proposals with an IoU larger than the predefined threshold with a proposal that has a higher score.
+Most of the RPN's architecture looks like a standard CNN image classifier. The network does not predict the raw coordinates, but instead, it learns to predict offsets of reference boxes. We call these reference boxes anchors, and we place them on every point in the feature map (see Figure \ref{fig:rpn}). Each point has several anchors of different sizes and ratios. We predict an "objectness" score for each anchor, which is the anchor's probability of being an object. At the same time, we regress the offsets of the anchors. Since we now have a large set of proposals that can overlap, we apply Non-Maximum Suppression (NMS) to solve the issue of duplicates. NMS is a greedy method that goes through the list of proposals sorted by score and removes proposals with an IoU larger than the predefined threshold with a proposal that has a higher score. Finally, the network outputs top $n$ proposals ($n = 2000$ in original paper).
 
 \begin{figure}[h]
     \centering
@@ -70,7 +70,8 @@ Most of the RPN's architecture looks like a standard CNN image classifier. The n
     \label{fig:rpn}
 \end{figure}
 
-\subsection{RoI Pooling}
+\subsection{RoI Pooling and Fully-connected Layers}
+Once we have proposals of different sizes and ratios, we need to convert maps to their corresponding features to fixed-size feature maps because the fully-connected network has a fixed-length input by definition. The conversion is done by RoI pooling layer that takes the input proposals and outputs fixed-size feature maps.  For every input proposal, crop the corresponding section in the input feature map. If we need a $n \times n$ output feature map, we equally divide the section into $n \times n$ blocks. We then apply max-pooling for these blocks, creating a new $n \times n$ feature map. For illustration, see Figure .
 
 \section{Cascade R-CNN}
 \section{RetinaNet}
