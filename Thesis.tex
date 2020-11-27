@@ -3,7 +3,7 @@
 % My packages
 \usepackage{amsmath} % For definitions
 
-
+\usepackage{float}
 
 \usepackage{metalogo}
 \usepackage[T1]{fontenc}
@@ -125,21 +125,20 @@
 \mainmatter
 
     \let\cleardoublepage\clearpage
-%   \include{Sources/Introduction}
-%   \include{Sources/Object_Detection}
-    
+    \include{Sources/Introduction}
+    \include{Sources/Object_Detection}
+        \chapter{Datasets}
+    \begin{itemize}
+    \item Představení datasetů od SANEZOO.
+    \item Popsat jejich vlastnosti (např. objekty jsou hustě u sebe, mnoho tříd, jedná třída, ...)
+    \item (U datasetů s více třídami popsat třídy?)
+    \item \todo{Sloucit s uvodem}
+    \end{itemize}
+    \include{Sources/Deep_Learning}
 
-%     \include{Sources/Deep_Learning}
 
-\chapter{Datasets}
-\begin{itemize}
-\item Představení datasetů od SANEZOO.
-\item Popsat jejich vlastnosti (např. objekty jsou hustě u sebe, mnoho tříd, jedná třída, ...)
-\item (U datasetů s více třídami popsat třídy?)
-\item \todo{Sloucit s uvodem}
-\end{itemize}
 
-\include{Sources/Models}
+    \include{Sources/Models}
 
 
 % \chapter{Training}
