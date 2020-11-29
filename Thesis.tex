@@ -2,9 +2,8 @@
 
 % My packages
 \usepackage{amsmath} % For definitions
-
+\usepackage{threeparttable}
 \usepackage{float}
-
 \usepackage{metalogo}
 \usepackage[T1]{fontenc}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -22,6 +21,7 @@
 \usepackage[binary-units=true]{siunitx}
 \DeclareSIUnit\px{px}
 \newcommand{\todo}[1]{\textcolor{red}{(#1)}}
+\newcommand{\bld}[1]{\textbf{#1}}
 
 \sisetup{%
   detect-all           = true,
@@ -31,6 +31,9 @@
   detect-weight        = true,
   detect-inline-weight = math,
 }
+
+
+\usepackage[parfill]{parskip}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hyperlinks & bookmarks
@@ -127,50 +130,40 @@
     \let\cleardoublepage\clearpage
     \include{Sources/Introduction}
     \include{Sources/Object_Detection}
-        \chapter{Datasets}
-    \begin{itemize}
-    \item Představení datasetů od SANEZOO.
-    \item Popsat jejich vlastnosti (např. objekty jsou hustě u sebe, mnoho tříd, jedná třída, ...)
-    \item (U datasetů s více třídami popsat třídy?)
-    \item \todo{Sloucit s uvodem}
-    \end{itemize}
+    \chapter{Datasets}
+     \begin{itemize}
+      \item Představení datasetů od SANEZOO.
+      \item Popsat jejich vlastnosti (např. objekty jsou hustě u sebe, mnoho tříd, jedná třída, ...)
+      \item (U datasetů s více třídami popsat třídy?)
+      \item \todo{Sloucit s uvodem}
+     \end{itemize}
     \include{Sources/Deep_Learning}
-
-
-
     \include{Sources/Models}
-
-
-% \chapter{Training}
-% \begin{itemize}
-% \item Jak byly modely natrenovany?
-% \item Jake hyperparametry byly zvoleny? (počet iterací, regularizace, ...)
-% \item HW specs
-% \item Grafy ztrátových funkcí
-% \item \todo{Sloucit s evaluaci modelu}
-% \end{itemize}
-
-% \chapter{Evaluation}
-% \begin{itemize}
-% \item Vysvětlení zvolené metriky (Average precision - AP)
-% \item Tabulka s metriky
-% \item Slovní komentář k výsledkům
-% \end{itemize}
-
-% \chapter{Benchmark Tool}
-% \begin{itemize}
-% \item Vysvětlit usecase
-% \item Design 
-% \item Použité technologie
-% \end{itemize}
-
-% \chapter{Future Work}
-% \begin{itemize}
-% \item Návrhy na zlepšení, lepší metody, ...
-% \item (Možná spojit s conclusion)
-% \end{itemize}
-
-% \chapter{Conclusion}
+    
+    \chapter{Evaluation}
+    \begin{itemize}
+    \item Jak byly modely natrenovany?
+    \item Jake hyperparametry byly zvoleny? (počet iterací, regularizace, ...)
+    \item HW specs
+    \item Grafy ztrátových funkcí
+    \item Tabulka s metriky
+    \item Slovní komentář k výsledkům
+    \end{itemize}
+    
+    \chapter{Benchmark Tool}
+    \begin{itemize}
+    \item Vysvětlit usecase
+    \item Design 
+    \item Použité technologie
+    \end{itemize}
+    
+    \chapter{Future Work}
+    \begin{itemize}
+    \item Návrhy na zlepšení, lepší metody, ...
+    \item (Možná spojit s conclusion)
+    \end{itemize}
+    
+    \chapter{Conclusion}
 
 
 % This ensures that the subsequent sections are being included as root
@@ -181,12 +174,16 @@
   \begingroup
     \let\clearpage\relax
     \glsaddall
-    \printglossary[type=\acronymtype]
+    % \printglossary[type=\acronymtype]
     % \newpage
     % \printglossary
   \endgroup
 
   \printindex
-  \printbibliography
+  \begingroup
+    \sloppy
+    % \RaggedRight %% needs package ragged2e
+      \printbibliography
+    \endgroup
 
 \end{document}
