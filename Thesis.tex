@@ -1,6 +1,7 @@
 \documentclass{mimosis}
 
 % My packages
+\usepackage{todonotes}
 \usepackage{amsmath} % For definitions
 \usepackage{threeparttable}
 \usepackage{float}
@@ -20,7 +21,7 @@
 
 \usepackage[binary-units=true]{siunitx}
 \DeclareSIUnit\px{px}
-\newcommand{\todo}[1]{\textcolor{red}{(#1)}}
+% \newcommand{\todo}[1]{\textcolor{red}{(#1)}}
 \newcommand{\bld}[1]{\textbf{#1}}
 
 \sisetup{%
@@ -130,13 +131,7 @@
     \let\cleardoublepage\clearpage
     \include{Sources/Introduction}
     \include{Sources/Object_Detection}
-    \chapter{Datasets}
-     \begin{itemize}
-      \item Představení datasetů od SANEZOO.
-      \item Popsat jejich vlastnosti (např. objekty jsou hustě u sebe, mnoho tříd, jedná třída, ...)
-      \item (U datasetů s více třídami popsat třídy?)
-      \item \todo{Sloucit s uvodem}
-     \end{itemize}
+    \include{Sources/Datasets}
     \include{Sources/Deep_Learning}
     \include{Sources/Models}
     

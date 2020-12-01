@@ -19,7 +19,7 @@ Firstly, let us define the field of deep learning. Many of closely related defin
     
 \theoremstyle{definition}
 \newtheorem*{definition}{Definition}
-\begin{definition}
+\begin{definition}\todo{Upravit. Doslovna citace. Pouziti definition bloku neni konzistentni s dalsimi definicemi.}
 A class of machine learning techniques that exploit \textbf{many} layers of non-linear information processing for supervised or unsupervised feature extraction and transformation, and for pattern analysis and classification.
 \end{definition}
 
@@ -43,14 +43,14 @@ See figure \ref{fig:fcl} for a graph representation of a neural network composed
 \end{figure}
 
 \subsection{Convolution Layer}
-The most important layer of CNNs is the \textbf{convolution layer}. It introduces a new concept of shared weights, which help us train deeper architectures and is more suited for image processing tasks. To illustrate the convolution layer, imagine the input as a square of neurons, i.e., a two-dimensional \textbf{image} $\boldsymbol{I: (W, H) \rightarrow \real}$, where ${W}$ is the width and ${H}$ is the height of the image. 
+The most important layer of CNNs is the \textbf{convolution layer}. It introduces a new concept of shared weights, which help us train deeper architectures and is more suited for image processing tasks. To illustrate the convolution layer, imagine the input as a square of neurons, i.e., a two-dimensional \textbf{image} $\boldsymbol{I: (W, H) \rightarrow \real}$\todo{Zmatecna definice. Sjednotit styl notaci.}, where ${W}$ is the width and ${H}$ is the height of the image. 
 
 In contrast with a fully-connected layer, we do not connect every input neuron to every output neuron. Instead, every output neuron is associated with a smaller region in the input image. Each association is defined by its \textbf{bias} $\boldsymbol{b}$ and $\textbf{weights}$ $\boldsymbol{K:(K_w, K_h) \rightarrow \real}$, where $K_w$, $K_h$ is the region's width and height. The output of the layer is a downscaled image $\boldsymbol{Y:(W - K_w + 1,}$ $\boldsymbol{H - K_h + 1)  \rightarrow \real}$, which is often called a \textbf{feature map}. The value of the $i, j$-th output neuron $Y(i,j)$ is defined by: 
 $$
 Y(i, j) = f\left((I * K)(i,j) + b\right)
 $$
 
-The $*$ operation is called \textbf{convolution} and is defined as follows:
+The $*$ operation is called \textbf{convolution}\todo{Fskutecnosti cross-correlation. Doplnit poznamku.} and is defined as follows:
 
 $$
 (I * K)(x, y) = \sum\limits_{k = 1}^{K_w}\sum\limits_{l = 1}^{K_h} I(x + k, y + l) \cdot K(k, l)
