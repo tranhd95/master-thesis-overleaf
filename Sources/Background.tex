@@ -1,5 +1,117 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Deep Learning}\label{deep_learning_chapter}
+\chapter{Background}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In this chapter, we first outline the aims and approaches of solving the object detection task. We then describe the fundamentals of deep learning for a better understanding of our chosen object detection models.
+
+\section{Object Detection}
+
+Object detection aims to locate objects in a given image and assign them to their \bld{class} (also called category or label). For illustration see Figure \ref{fig:od}. Generally, the task can be broken down into three steps: \bld{informative region selection}, \bld{feature extraction}, and \bld{classification}. In the first step, the method has to determine regions to which we apply the feature extraction. The feature extractor outputs a semantic numerical representation for each selected region is then used to predict the target's class. Note that, these steps are not fixed and the pipeline can vary.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\linewidth]{Sources/Figures/objectdetection.png}
+    \caption{A high-level illustration of an object detection pipeline. Adapted from \cite{objectdetectionfigure}.}
+    \label{fig:od}
+\end{figure}
+
+Traditionally, engineers had to hand-craft feature extractors using algorithms such as SIFT \cite{sift}, SURF \cite{surf}, or HOG \cite{hog}. These methods are combined with well-established classification algorithms such as Support Vector Machines (SVM) \cite{svm}. Since this approach needs manual designing, it can be very demanding.
+
+Deep learning methods introduced an end-to-end learning approach, which means that the model only takes a given set of annotated images to learn to detect key features, localize the objects, and classify them. So the hard work is done mainly by the model itself. This approach outperforms the traditional pipelines by a significant margin with respect to illumination and viewpoint changes \cite{outperforming}. We describe deep learning in detail in the Section \ref{deep_learning_chapter}. But firstly, let us describe how to measure the performance of object detectors.
+
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=\linewidth]{Sources/Figures/comparison.png}
+%     \caption{Comparison of: (a) Traditional approach and (b) Deep learning approach. Adapted from \cite{comparison_illustration}. \todo{Zmenit obrazek, clovek mate.}}
+%     \label{fig:comparison}
+% \end{figure}
+
+\subsection{Evaluation Metrics}
+Firstly, let us define evaluation metrics for binary classification. Consider two classes we want to predict: \bld{positive (P)} and \bld{negative (N)}. Let
+\begin{itemize}
+    \item \bld{true positives (TP)} be correctly predicted P cases,
+    \item \bld{true negatives (TN)} be correctly predicted N cases,
+    \item \bld{false negatives (FN)} be all P cases we wrongly predicted as N,
+    \item \bld{false positives (FP)} be all N cases we wrongly predicted as P.
+\end{itemize}
+Suppose we want to focus on the performance of P cases prediction. We define metrics \bld{precision} and \bld{recall} as follows:
+$$
+    \text{precision} = \frac{\text{TP}}{\text{TP} + \text{FP}}, \\
+    \text{recall} = \frac{\text{TP}}{\text{TP} + \text{FN}}.
+$$
+Precision is also known as a positive predictive value, i.e., how many of the positive predictions (TP + FP) actually belong to P class. Recall is known as a true positive rate and it measures how many TP we have predicted out of all actual P cases (TP + FN). There is a trade-off relationship between these metrics. If we increase the precision (e.g., by setting more strict constraints for assigning TP to a prediction), the recall decreases as there would be more FN cases, and vice versa. 
+
+For an object detection model evaluation, we can suppose that TP represents correctly detected object. Similarly, FP can be viewed as a wrongly detected object or duplicate detection. We would like to combine the precision and recall to a single composite score -- \bld{mean average precision (mAP)}. However, before we delve into its definition, let us first describe how to determine the TP and FP from the model's predictions.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{Sources/Figures/iou.png}
+    \caption{Illustration of two bounding boxes and the two types of areas they form.}
+    \label{fig:iou}
+\end{figure}
+
+Models output a list of predictions that are defined by \bld{bounding box} coordinates (the boundaries of the detected object), \bld{predicted class}, and \bld{confidence score} of the prediction. To determine if the detection is correct, we need to define \bld{Intersubsection-over-Union (IoU)}. IoU is defined as a proportion of the area of intersubsection (overlap between predicted bounding box and the ground-truth bounding box) and the area of union (see Figure \ref{fig:iou}):
+$$
+    \text{IoU} = \frac{\text{area of intersubsection}}{\text{area of union}}.
+$$
+We simply declare the prediction as a TP if the IoU of the ground-truth bounding box and the predicted bounding box is greater than a fixed IoU threshold. Otherwise the prediction is considered as a FP. Now that we know how to determine the TP and FP cases, we can define mAP.
+
+Mean average precision is an averaged \bld{average precision (AP)} over all classes. Let us define AP for some class $c$. We denote it as AP$_{c}$. For illustration, consider a simplified example: we collect all predictions for the class $c$ from all test images, and we rank them by the confidence score. Let \bld{positive predictions} be those predictions that have IoU > 0.5. If there are more positive predictions for a single object, only the prediction with a higher confidence score is considered to be a TP. See the example Table \ref{tab:ap}. In the definition of AP, precision is defined as the proportion of all predictions above the rank which are TP. Whereas recall is defined as the proportion of TP ranked above a given rank and all positive predictions.
+\begin{table}[H]
+\centering 
+\begin{threeparttable}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\bld{rank} & \bld{IoU > 0.5} & \bld{confidence score} & \bld{TP/FP} & \bld{Precision} & \bld{Recall} \\
+\hline
+1 & yes & 98 \% & TP     & 1.00  & 0.2  \\
+2 & yes & 88 \% & FP$^*$  & 0.50  & 0.2 \\
+3 & yes & 78 \% & TP     & 0.67  & 0.4  \\
+4 & yes & 75 \% & TP     & 0.75  & 0.6  \\
+5 & no  & 60 \% & FP     & 0.60  & 0.6  \\
+6 & yes & 59 \% & TP     & 0.67  & 0.8  \\
+\hline
+\end{tabular}
+\begin{tablenotes}
+      \small
+      \item  $^*$ consider this example as a duplicate of the rank 1 example.
+\end{tablenotes}
+\caption{An example of predictions.}
+\label{tab:ap}
+\end{threeparttable}
+\end{table}
+
+Let us explain the calculation behind the third row. The precision is $2/3 \doteq 0.67$, because there are 2 TP out of 3 predictions above the third row (including the row). The recall is $2/5 = 0.4$, since there are 2 TP out of 5 positive predictions (IoU > 0.5). As we can see, the precision has a "zigzag" pattern as we go down the ranking. Whereas the recall is increasing. 
+
+The AP$_c$ is defined as an \bld{area under the precision-recall curve} (see Figure \ref{fig:precisionrecall}). To reduce the impact of the zigzags, we interpolate the curve at each recall value $r$ by taking the maximum precision $p_\text{interp}$ measured "to the right":
+$$
+p_\text{interp}(r) = \max\limits_{\hat{r}:\hat{r} \geq r} p(\hat{r}),
+$$
+where $p(\hat{r})$ is the measured precision at the measured recall $\hat{r}$. We obtain a monotonically decreasing curve that can be numerically integrated as it is a piecewise constant (see the red dashed curve in Figure \ref{fig:precisionrecall}). We sample all unique recall values $R$ and compute AP$_c$ as a sum of rectangular blocks as follows:
+$$
+\text{AP}_c = \sum\limits^{\lvert R\rvert - 1}_{n = 0} (r_{n+1} - r_n) \cdot p_\text{interp}(r_{n+1}).
+$$
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Sources/Figures/precisionrecall.png}
+    \caption{Precision-recall curves.}
+    \label{fig:precisionrecall}
+\end{figure}
+
+We then get the final mAP by averaging all AP$_c$ for every class (let $C$ be the set of all classes):
+$$
+    \text{mAP} = \frac{1}{\lvert C \rvert} \cdot \sum_{ c\in C} \text{AP}_c.
+$$
+The VOC competitions \cite{voc} used this metric for a fixed IoU = 0.5 threshold. However, for our evaluation, we use the \bld{updated COCO challenge metric} \cite{coco} that averages the mAP over 10~different IoU thresholds (from 0.50 to 0.95 with 0.05 step size). We denote it as AP$_{.50:.05:.90}$ = AP. Similarly, for single IoU thresholds we have AP$_{50}$ (the standard VOC metric) and AP$_{75}$ (a~strict metric). They also define AP$_\text{small}$, AP$_\text{medium}$, and AP$_\text{large}$ for varying object's size:
+\begin{itemize}
+    \item AP$_\text{small}$ is an AP for small objects (bounding box area < $32^2$ px),
+    \item AP$_\text{medium}$ is an AP for medium objects ($32^2$ < area < $96^2$ px),
+    \item AP$_\text{large}$ is an AP for large objects (area > $96^2$ px).
+\end{itemize}
+Note that they do not make distinction between mAP and AP. Henceforth, whenever we refer to the AP, we mean the primary COCO metric AP$_{.50:.05:.90}$. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Deep Learning}\label{deep_learning_chapter}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Neural networks since 60s
@@ -14,21 +126,22 @@ In this chapter, we will briefly introduce some of the relevant topics of deep l
 The history of ANNs can be dated back to the 1940s \cite{McCulloch_1943}. However, only since 2006, deep architectures of ANN have become a trendy area of machine learning research \cite{DBLP:journals/corr/Schmidhuber14}. That year, Hinton et al. introduced unsupervised pre-training of deep feedforward neural networks. Using this method on a deep belief network \cite{DBN}, the model achieved 1.2\% error rate on the MNIST classification dataset \cite{mnist}. This exceptional result drew attention to deep belief networks. The historical development of artificial neural networks and deep learning is nicely overviewed in a journal article by another important figure in the field Juergen Schmidhuber 
 \cite{DBLP:journals/corr/Schmidhuber14}.
 
-\section{Definition}
+\subsection{Definition}
 Firstly, let us define the field of deep learning. Many of closely related definitions are summarized in \cite{mic_definitions}. We cite the one that best suits the nature of this work.  
     
 \theoremstyle{definition}
+\newtheorem*{definition}{Definition}
 \begin{definition}\todo{Upravit. Doslovna citace. Pouziti definition bloku neni konzistentni s dalsimi definicemi.}
 A class of machine learning techniques that exploit \textbf{many} layers of non-linear information processing for supervised or unsupervised feature extraction and transformation, and for pattern analysis and classification.
 \end{definition}
 
 In our case, the deep learning technique will be used for object detection, which also consists of the classification task. The selected object detection models are deep architectures of \textbf{convolutional neural network (CNN)}, which are particularly effective for image processing tasks. In the coming section, we will briefly describe the foundations of CNNs. 
 
-\section{Convolutional Neural Network}
-Deep neural networks are organized into multiple layers, which are typically sequentially ordered. In the following subsections, we will describe layers that we can find in CNNs.
+\subsection{Convolutional Neural Network}
+Deep neural networks are organized into multiple layers, which are typically sequentially ordered. In the following subsubsections, we will describe layers that we can find in CNNs.
 
-\subsection{Fully-connected Layer}
-The most basic layer is \textbf{fully-connected layer} (also known as \textbf{linear} or \textbf{dense} layer). It performs a transformation from \textbf{input vector} $\boldsymbol{x}$ of size $m$ into \textbf{output vector} $\boldsymbol{y}$ of size $n$. The transformation has two parameters, a \textbf{weight matrix} $\boldsymbol{W}$ of size $m \times n$ and \textbf{bias} $\boldsymbol{b}$ of size $n$. Firstly, the input vector is weighted by $W$, then the bias is added, and finally an \textbf{activation function} $\boldsymbol{f}$ is applied to every element (see subsection \ref{afunctions} for more details on activation functions).
+\subsubsection{Fully-connected Layer}
+The most basic layer is \textbf{fully-connected layer} (also known as \textbf{linear} or \textbf{dense} layer). It performs a transformation from \textbf{input vector} $\boldsymbol{x}$ of size $m$ into \textbf{output vector} $\boldsymbol{y}$ of size $n$. The transformation has two parameters, a \textbf{weight matrix} $\boldsymbol{W}$ of size $m \times n$ and \textbf{bias} $\boldsymbol{b}$ of size $n$. Firstly, the input vector is weighted by $W$, then the bias is added, and finally an \textbf{activation function} $\boldsymbol{f}$ is applied to every element (see subsubsection \ref{afunctions} for more details on activation functions).
 $$
 y = f(W\cdot x + b)
 $$
@@ -41,7 +154,7 @@ See figure \ref{fig:fcl} for a graph representation of a neural network composed
     \label{fig:fcl}
 \end{figure}
 
-\subsection{Convolution Layer}
+\subsubsection{Convolution Layer}
 The most important layer of CNNs is the \textbf{convolution layer}. It introduces a new concept of shared weights, which help us train deeper architectures and is more suited for image processing tasks. To illustrate the convolution layer, imagine the input as a square of neurons, i.e., a two-dimensional \textbf{image} $\boldsymbol{I: (W, H) \rightarrow \real}$\todo{Zmatecna definice. Sjednotit styl notaci.}, where ${W}$ is the width and ${H}$ is the height of the image. 
 
 In contrast with a fully-connected layer, we do not connect every input neuron to every output neuron. Instead, every output neuron is associated with a smaller region in the input image. Each association is defined by its \textbf{bias} $\boldsymbol{b}$ and $\textbf{weights}$ $\boldsymbol{K:(K_w, K_h) \rightarrow \real}$, where $K_w$, $K_h$ is the region's width and height. The output of the layer is a downscaled image $\boldsymbol{Y:(W - K_w + 1,}$ $\boldsymbol{H - K_h + 1)  \rightarrow \real}$, which is often called a \textbf{feature map}. The value of the $i, j$-th output neuron $Y(i,j)$ is defined by: 
@@ -69,14 +182,14 @@ Another important parameter of the layer is \textbf{stride length}. It defines t
     \label{fig:convolution}
 \end{figure}
 
-\subsection{Pooling Layer}
+\subsubsection{Pooling Layer}
 Another essential layer for CNNs is the \textbf{pooling layer}. In CNN architectures, the pooling layers typically come after the convolution layers. They are used for downscaling the feature maps to reduce the number of network parameters. 
 
 The layer works in a similar manner to the convolution layer. It takes multiple values from a pooling region and outputs a single pixel. The most common type of a~ pooling operation is \textbf{max pooling}, which outputs the region's maximum value. Another operation that can be applied to the region is \textbf{average pooling}, which outputs the region's mean value.
 
 The pooling region's shape is typically 2 $\times$ 2. In some cases, we want to pool from the whole input. We call these operations \textbf{global poolings} (e.g., global max pooling).
 
-\subsection{Activation Functions}
+\subsubsection{Activation Functions}
 \label{afunctions}
 
 Activation functions introduce non-linearity to the layers. Some of the most important ones are listed below:
@@ -89,7 +202,7 @@ $$
 $$
 \end{itemize}
 
-\section{Training} \todo{Doplnit trenovani}
+\subsection{Training} \todo{Doplnit trenovani}
 \begin{itemize}
     \item Optimization task
     \item Gradient descent
@@ -97,7 +210,7 @@ $$
     \item Adam, etc.
 \end{itemize}
 
-\section{Overfitting and underfitting}
+\subsection{Overfitting and underfitting}
 
 When we train a machine learning model, we typically have a \textbf{training set} and a \textbf{test set}. We then fit the model's parameters on a training set to \textbf{minimize} an error measure (a \textbf{training loss} or \textbf{error}). However, at the same time, we want to minimize a \textbf{test error} as well. We say that a model should \textbf{generalize}. This means that it should perform well on unseen data.
 
@@ -114,19 +227,30 @@ These efforts can lead to two major problems in machine learning. If we train fo
 
 In coming subsections we describe the most common techniques to prevent overfitting in neural networks.
 \footnotetext[2]{The simplest explanation is most likely the right one.}
-\subsection{$L_2$ Regularization}
+\subsubsection{$L_2$ Regularization}
 Following the Occam's razor principle\footnotemark , the extreme weights are likely to cause overfitting. We can reduce the overfitting by penalizing these weights with $\boldsymbol{L_2}$ \textbf{regularization}. The penalization is performed by adding a $L_2$ term to the loss function. The term is defined as a sum of squares of weight values. 
 
 
 
-\subsection{Dropout}
+\subsubsection{Dropout}
 Another common technique is called \textbf{dropout}. This method prevents individual nodes in the network to rely on the output of other nodes by randomly "dropping out" or "deactivating" some of the neurons. The method's parameter is a number between 0 and 1 that defines the fraction of the input units to drop.
 
-\subsection{Batch Normalization}
+\subsubsection{Batch Normalization}
 Deep neural networks often suffer from unstability. Small changes in layers close to the input amplify as they propagate through the network. The deeper layers have to adapt significantly and thus learn slowly. \textbf{Batch normalization} introduces a way to stabilize and accelerate the training speed by normalizing the outputs of previous layer by subtracting the batch mean and dividing by the batch standard deviation.
 
-\subsection{Data Augmentation}
+\subsubsection{Data Augmentation}
 The most obvious way to train a robust model is to have an extensive dataset. However, in some cases, it is very challenging to acquire sufficient ammount of data. We can overcome this issue by 
 \textbf{augmenting} the training set by generating new artificial data. Of course, it is impossible to adopt this approach to every type of datasets, but it is straightforward for object detection tasks. The simplest way to augment the image dataset is by adding \textbf{random transformations} (cropping, resizing, rotation, ...) of the original images. The more sophisticated method would be generating new \textbf{synthetic} images. With recent advances in generative adversarial networks (GANs), it is possible to synthesize high-quality images. An impressive adoption of this approach is proposed in \cite{wei2019generative}.
+
+
+
+
+
+
+
+
+
+
+
 
 

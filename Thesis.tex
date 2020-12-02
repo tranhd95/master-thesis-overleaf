@@ -1,12 +1,13 @@
 \documentclass{mimosis}
 
 % My packages
-\usepackage{todonotes}
+\usepackage[disable]{todonotes}
 \usepackage{amsmath} % For definitions
 \usepackage{threeparttable}
 \usepackage{float}
 \usepackage{metalogo}
 \usepackage[T1]{fontenc}
+\usepackage{subcaption}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Some of my favourite personal adjustments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -130,49 +131,23 @@
 
     \let\cleardoublepage\clearpage
     \include{Sources/Introduction}
-    \include{Sources/Object_Detection}
-    \include{Sources/Datasets}
-    \include{Sources/Deep_Learning}
+    \include{Sources/Background}
     \include{Sources/Models}
-    
-    \chapter{Evaluation}
-    \begin{itemize}
-    \item Jak byly modely natrenovany?
-    \item Jake hyperparametry byly zvoleny? (počet iterací, regularizace, ...)
-    \item HW specs
-    \item Grafy ztrátových funkcí
-    \item Tabulka s metriky
-    \item Slovní komentář k výsledkům
-    \end{itemize}
-    
-    \chapter{Benchmark Tool}
-    \begin{itemize}
-    \item Vysvětlit usecase
-    \item Design 
-    \item Použité technologie
-    \end{itemize}
-    
-    \chapter{Future Work}
-    \begin{itemize}
-    \item Návrhy na zlepšení, lepší metody, ...
-    \item (Možná spojit s conclusion)
-    \end{itemize}
-    
-    \chapter{Conclusion}
-
-
+    \include{Sources/Evaluation}
+    \include{Sources/Tool}
+    \include{Sources/Conclusion}
 % This ensures that the subsequent sections are being included as root
 % items in the bookmark structure of your PDF reader.
 \bookmarksetup{startatroot}
 \backmatter
 
-  \begingroup
-    \let\clearpage\relax
-    \glsaddall
-    % \printglossary[type=\acronymtype]
-    % \newpage
-    % \printglossary
-  \endgroup
+%   \begingroup
+%     \let\clearpage\relax
+%     \glsaddall
+%     % \printglossary[type=\acronymtype]
+%     % \newpage
+%     % \printglossary
+%   \endgroup
 
   \printindex
   \begingroup
