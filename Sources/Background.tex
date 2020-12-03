@@ -105,7 +105,7 @@ $$
 The VOC competitions \cite{voc} used this metric for a fixed IoU = 0.5 threshold. However, for our evaluation, we use the \bld{updated COCO challenge metric} \cite{coco} that averages the mAP over 10~different IoU thresholds (from 0.50 to 0.95 with 0.05 step size). We denote it as AP$_{.50:.05:.90}$ = AP. Similarly, for single IoU thresholds we have AP$_{50}$ (the standard VOC metric) and AP$_{75}$ (a~strict metric). They also define AP$_\text{small}$, AP$_\text{medium}$, and AP$_\text{large}$ for varying object's size:
 \begin{itemize}
     \item AP$_\text{small}$ is an AP for small objects (bounding box area < $32^2$ px),
-    \item AP$_\text{medium}$ is an AP for medium objects ($32^2$ < area < $96^2$ px),
+    \item AP$_\text{medium}$ is an AP for medium objects ($32^2$ px < area < $96^2$ px),
     \item AP$_\text{large}$ is an AP for large objects (area > $96^2$ px).
 \end{itemize}
 Note that they do not make distinction between mAP and AP. Henceforth, whenever we refer to the AP, we mean the primary COCO metric AP$_{.50:.05:.90}$. 
@@ -121,27 +121,36 @@ Note that they do not make distinction between mAP and AP. Henceforth, whenever 
   % Based on ANN
 % Impact
 
-In this chapter, we will briefly introduce some of the relevant topics of deep learning to the reader. We assume previous knowledge of the basics of machine learning and artificial neural networks (ANNs). All concepts in this chapter are very well described in the book written by the pioneers of deep learning, Ian Goodfellow, Yoshua Bengio, and Aaron Courville \cite{Goodfellow-et-al-2016}. 
+In this part, we briefly introduce relevant topics of deep learning. For the sake of readability, we only limit ourselves to high-level and simple descriptions. The covered concepts are very well described in the book written by the pioneers of deep learning, Ian Goodfellow, Yoshua Bengio, and Aaron Courville \cite{Goodfellow-et-al-2016}. In fact, we draw inspiration from the book for some of our definitions.
 
-The history of ANNs can be dated back to the 1940s \cite{McCulloch_1943}. However, only since 2006, deep architectures of ANN have become a trendy area of machine learning research \cite{DBLP:journals/corr/Schmidhuber14}. That year, Hinton et al. introduced unsupervised pre-training of deep feedforward neural networks. Using this method on a deep belief network \cite{DBN}, the model achieved 1.2\% error rate on the MNIST classification dataset \cite{mnist}. This exceptional result drew attention to deep belief networks. The historical development of artificial neural networks and deep learning is nicely overviewed in a journal article by another important figure in the field Juergen Schmidhuber 
+The history of artificial neural networks (ANNs) can be dated back to the 1940s \cite{McCulloch_1943}. However, only since 2006, deep architectures of ANN have become a trendy area of machine learning research \cite{DBLP:journals/corr/Schmidhuber14}. That year, Hinton et al. introduced unsupervised pre-training of deep feedforward neural networks \cite{hinton2006reducing}. Using this method on a deep belief network \cite{DBN}, the model achieved 1.2\% error rate on the MNIST classification dataset \cite{hinton2006fast, mnist}. This exceptional result drew attention to deep neural networks. The detailed historical development of artificial neural networks and deep learning is nicely overviewed in a journal article by another important figure in the field Juergen Schmidhuber 
 \cite{DBLP:journals/corr/Schmidhuber14}.
 
-\subsection{Definition}
-Firstly, let us define the field of deep learning. Many of closely related definitions are summarized in \cite{mic_definitions}. We cite the one that best suits the nature of this work.  
+\subsection{Deep Feedforward Network}
+% Firstly, let us define the field of deep learning. Many of closely related definitions are summarized in \cite{mic_definitions}. We cite the one that best suits the nature of this work.  
     
-\theoremstyle{definition}
-\newtheorem*{definition}{Definition}
-\begin{definition}\todo{Upravit. Doslovna citace. Pouziti definition bloku neni konzistentni s dalsimi definicemi.}
-A class of machine learning techniques that exploit \textbf{many} layers of non-linear information processing for supervised or unsupervised feature extraction and transformation, and for pattern analysis and classification.
-\end{definition}
+% \theoremstyle{definition}
+% \newtheorem*{definition}{Definition}
+% \begin{definition}
+% A class of machine learning techniques that exploit \textbf{many} layers of non-linear information processing for supervised or unsupervised feature extraction and transformation, and for pattern analysis and classification.
+% \end{definition}
 
-In our case, the deep learning technique will be used for object detection, which also consists of the classification task. The selected object detection models are deep architectures of \textbf{convolutional neural network (CNN)}, which are particularly effective for image processing tasks. In the coming section, we will briefly describe the foundations of CNNs. 
+% In our case, the deep learning technique will be used for object detection, which also consists of the classification task. The selected object detection models are deep architectures of \textbf{convolutional neural network (CNN)}, which are particularly effective for image processing tasks. In the coming section, we will briefly describe the foundations of CNNs. 
+The fundamental model of deep learning is a \bld{deep feedforward network}, also known as feedforward neural networks, or multilayer perceptrons. Feedforward networks approximate arbitrary functions of the form $y = f^*(x;\theta)$, where $y$ is the \bld{output}, $x$ is the \bld{input}, and $\theta$ are the network's \bld{weights} (or parameters). For example, in our case, we would like to output the list of objects with their respective coordinates and classes based on the input image. The process of finding the best weights $\theta$ for accurate approximation is called \bld{training} (or the network \bld{learns}). We describe this process in detail in Section \ref{sec:training}.
+
+The network $f^*$ is composed of intermediate computations that are defined by some function $f^{(i)}$. We might write the approximated function as a function composition of $n$ functions: 
+$$
+f^*(x) = (f^{(n)} \circ f^{(n-1)} \circ ... \circ f^{(2)} \circ f^{(1)})(x).
+$$
+As we can see, the information flows sequentially in the network; thus, it is called feedforward. Each of the function $f^{(i)}$ is called \bld{layer}. The deep learning models are composed of many different layers. We say that the network is deep; hence, the name \bld{deep learning}. In the next sections, we describe different types of layers.
+
+
 
 \subsection{Convolutional Neural Network}
-Deep neural networks are organized into multiple layers, which are typically sequentially ordered. In the following subsubsections, we will describe layers that we can find in CNNs.
+In the following subsections we describe the layers of \bld{convolutional neural networks} that are a special case of a feedforward networks. They thrive at image processing tasks as a result of a very effective way of feature extraction.
 
 \subsubsection{Fully-connected Layer}
-The most basic layer is \textbf{fully-connected layer} (also known as \textbf{linear} or \textbf{dense} layer). It performs a transformation from \textbf{input vector} $\boldsymbol{x}$ of size $m$ into \textbf{output vector} $\boldsymbol{y}$ of size $n$. The transformation has two parameters, a \textbf{weight matrix} $\boldsymbol{W}$ of size $m \times n$ and \textbf{bias} $\boldsymbol{b}$ of size $n$. Firstly, the input vector is weighted by $W$, then the bias is added, and finally an \textbf{activation function} $\boldsymbol{f}$ is applied to every element (see subsubsection \ref{afunctions} for more details on activation functions).
+The most basic layer is \textbf{fully-connected layer} (also known as \textbf{linear} or \textbf{dense} layer). It performs a transformation from \textbf{input vector} $\boldsymbol{x}$ of size $m$ into \textbf{output vector} $\boldsymbol{y}$ of size $n$. The transformation has two parameters, a \textbf{weight matrix} $\boldsymbol{W}$ of size $m \times n$ and \textbf{bias} $\boldsymbol{b}$ of size $n$. Firstly, the input vector is weighted by $W$, then the bias is added, and finally an \textbf{activation function} $\boldsymbol{f}$ is applied to every element (see Section \ref{afunctions} for more details on activation functions).
 $$
 y = f(W\cdot x + b)
 $$
@@ -202,13 +211,18 @@ $$
 $$
 \end{itemize}
 
-\subsection{Training} \todo{Doplnit trenovani}
+\subsection{Training}
+\label{sec:training}\todo{Doplnit trenovani}
 \begin{itemize}
     \item Optimization task
     \item Gradient descent
     \item Backpropagation
     \item Adam, etc.
 \end{itemize}
+We find the best weights by minimizing the loss function $\mathcal{L}(x)$ that determines the quality of the model.
+There are many 
+
+
 
 \subsection{Overfitting and underfitting}
 
