@@ -125,17 +125,17 @@
 %   \include{Sources/Declaration}
 %   \include{Sources/Acknowledgements}
 %   \include{Sources/Abstract}
-  \tableofcontents
+\tableofcontents
 
 \mainmatter
 
-    \let\cleardoublepage\clearpage
-    \include{Sources/Introduction}
-    \include{Sources/Background}
-    \include{Sources/Models}
-    \include{Sources/Evaluation}
-    \include{Sources/Tool}
-    \include{Sources/Conclusion}
+\let\cleardoublepage\clearpage
+\include{Sources/Introduction}
+\include{Sources/Background}
+\include{Sources/Models}
+\include{Sources/Evaluation}
+\include{Sources/Tool}
+\include{Sources/Conclusion}
 % This ensures that the subsequent sections are being included as root
 % items in the bookmark structure of your PDF reader.
 \bookmarksetup{startatroot}
@@ -149,11 +149,11 @@
 %     % \printglossary
 %   \endgroup
 
-  \printindex
-  \begingroup
-    \sloppy
-    % \RaggedRight %% needs package ragged2e
-      \printbibliography
-    \endgroup
+\printindex
+\begingroup
+\sloppy
+% \RaggedRight %% needs package ragged2e
+\printbibliography
+\endgroup
 
 \end{document}
