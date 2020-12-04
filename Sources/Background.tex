@@ -181,15 +181,6 @@ we refer to the AP, we mean the primary COCO metric AP$_{.50:.05:.90}$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Deep Learning}\label{deep_learning_chapter}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Neural networks since 60s
-% Deep learning since 2006
-% Definition
-% Multiple layers
-% Based on ANN
-% Impact
-
 In this part, we briefly introduce relevant topics of deep learning. For the
 sake of readability, we only limit ourselves to high-level and simple
 descriptions. The covered concepts are very well described in the book written
@@ -232,8 +223,6 @@ called feedforward. Each of the function $f^{(i)}$ is called \bld{layer}. The
 deep learning models are composed of many different layers. We say that the
 network is deep; hence, the name \bld{deep learning}. In the next sections, we
 describe different types of layers.
-
-
 
 \subsection{Convolutional Neural Network}
 In the following subsections we describe the layers of \bld{convolutional neural
@@ -315,7 +304,6 @@ Another important parameter of the layer is \textbf{stride length}. It defines
 the number of pixels the filters shifts over the input image. The bigger is
 stride length the more downscaled the output image is.
 
-
 \begin{figure}[h]
     \centering
     \includegraphics[width=10cm]{Sources/Figures/convolution.png}
@@ -368,18 +356,30 @@ important ones are listed below:
 
 \subsection{Training}
 \label{sec:training}\todo{Doplnit trenovani}
-\begin{itemize}
-    \item Optimization task
-    \item Gradient descent
-    \item Backpropagation
-    \item Adam, etc.
-\end{itemize}
-We find the best weights by minimizing the loss function $\mathcal{L}(x)$ that
+We find the best weights by minimizing the loss function $\mathcal{L}$ that
 determines the quality of the model. There are many different loss functions.
-However, we describe the most common ones for classification and regression
+However, we only describe the most common ones for classification and regression
 tasks.
 
+\bld{Mean squared error (MSE)} is the most commonly used regression loss
+function. It is an average of squared errors. Error is defined as a difference
+(or distance) between predicted and actual value. Consider a dataset of $n$
+examples $\mathcal{D} = \{(x_i, a_i)\mid i = 1,...,n\}$ where $x_i$ is the input
+and $a_i$ is the actual value. Let $y_i = f^*(x_i; \theta)$ be the predicted
+output of the model based on the input $x_i$ parametrized by the model's weights
+$\theta$. We can then define MSE of dataset $\mathcal{D}$ as follows:
+$$
+    \text{MSE} = \frac{1}{n}\sum\limits^{n}_{i=1}(y_i - a_i)^2
+$$
 
+\bld{Cross-entropy loss (CE)} is widely used for classification. For simplicity,
+consider a binary classification where the values are either 1 or 0. Consider
+again the dataset $\mathcal{D}$ and predictions $y_i$. The CE is then defined as:
+$$
+    \text{CE} = -\frac{1}{n}\sum\limits_{n=1}^{n} a_i \log(y_i) + (1-a_i)
+    \log(1-y_i)
+$$
+motivation
 
 \subsection{Overfitting and underfitting}
 
@@ -422,8 +422,6 @@ weights with $\boldsymbol{L_2}$ \textbf{regularization}. The penalization is
 performed by adding a $L_2$ term to the loss function. The term is defined as a
 sum of squares of weight values.
 
-
-
 \subsubsection{Dropout}
 Another common technique is called \textbf{dropout}. This method prevents
 individual nodes in the network to rely on the output of other nodes by randomly
@@ -451,16 +449,3 @@ would be generating new \textbf{synthetic} images. With recent advances in
 generative adversarial networks (GANs), it is possible to synthesize
 high-quality images. An impressive adoption of this approach is proposed in
 \cite{wei2019generative}.
-
-
-
-
-
-
-
-
-
-
-
-
-
