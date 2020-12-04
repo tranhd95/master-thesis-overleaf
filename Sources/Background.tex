@@ -355,11 +355,13 @@ important ones are listed below:
 \end{itemize}
 
 \subsection{Training}
-\label{sec:training}\todo{Doplnit trenovani}
-We find the best weights by minimizing the loss function $\mathcal{L}$ that
-determines the quality of the model. There are many different loss functions.
-However, we only describe the most common ones for classification and regression
-tasks.
+\label{sec:training}
+We find the best weights by minimizing the loss function $\mathcal{L(\theta)}$
+that determines the quality of the model with parameters $\theta$. There are
+many different loss functions. However, we only describe the most common ones
+for classification and regression tasks.
+
+\subsubsection{Loss functions}
 
 \bld{Mean squared error (MSE)} is the most commonly used regression loss
 function. It is an average of squared errors. Error is defined as a difference
@@ -369,17 +371,53 @@ and $a_i$ is the actual value. Let $y_i = f^*(x_i; \theta)$ be the predicted
 output of the model based on the input $x_i$ parametrized by the model's weights
 $\theta$. We can then define MSE of dataset $\mathcal{D}$ as follows:
 $$
-    \text{MSE} = \frac{1}{n}\sum\limits^{n}_{i=1}(y_i - a_i)^2
+    \text{MSE}_{\mathcal{D}}(\theta) =
+    \frac{1}{n}\sum\limits^{n}_{i=1}(y_i - a_i)^2
 $$
+\bld{Cross-entropy loss (CE)} is widely used for classification tasks. For
+simplicity, consider a binary classification where the values are either 1 or 0.
+Consider again the dataset $\mathcal{D}$ and predictions $y_i$. The CE is then
+defined as:
+$$
+    \text{CE}_\mathcal{D}(\theta) =
+    -\frac{1}{n}\sum\limits_{n=1}^{n} a_i \log(y_i) + (1-a_i)\log(1-y_i)
+$$
+If we look at the model from a statistical point of view, it learns to capture
+the desired probability distribution of some dataset. So the general intuition
+behind the CE loss is that it measures the difference between two probability
+distributions -- the learned distribution and ground-truth distribution. The
+lower the CE is, the more similar the distributions are. Another more precise
+mathematical interpretation is that minimizing CE is equivalent to maximizing
+the model's maximum likelihood
+\footnote{
+    Likelihood function measures the goodness of fit of a statistical model to
+    a sample of data for given values of the unknown parameters. Definition
+    borrowed from \url{https://en.wikipedia.org/wiki/Likelihood_function}.
+}. The defined CE can be easily extended for multi-class (or categorical)
+version.
 
-\bld{Cross-entropy loss (CE)} is widely used for classification. For simplicity,
-consider a binary classification where the values are either 1 or 0. Consider
-again the dataset $\mathcal{D}$ and predictions $y_i$. The CE is then defined as:
-$$
-    \text{CE} = -\frac{1}{n}\sum\limits_{n=1}^{n} a_i \log(y_i) + (1-a_i)
-    \log(1-y_i)
-$$
-motivation
+\subsubsection{Learning algorithm}
+The process of finding the best weights is an \bld{optimization problem}. The
+goal is to minimize the selected loss function by adjusting the weights
+accordingly. The most common optimization algorithm used for training neural
+networks is \bld{gradient descent (GD)} and its derivatives. The idea behind GD
+is to alter the weights in the \bld{opposite direction of the gradient} of the
+loss function (the gradient's direction is the steepest ascent).
+
+Since the dataset $\mathcal{D}$ can be very large or even infinite, we cannnot
+compute the gradient straight away. Instead, we sample the prior dataset and
+compute the sample's gradient. This method is called \bld{stochastic gradient
+    descent (SGD)}. The samples are called \bld{minibatches} and they can be
+processed at once by vectorization. Let us now describe the main variations of
+SGD.
+
+\bld{Stochastic gradient descent.} Let $\mathcal{B} \subseteq \mathcal{D}$ be
+the minibatch, $\nabla_\mathcal{L(\theta)}$ be the gradient of
+$\mathcal{L(\theta)}$
+$
+    \theta^{(t)} = \theta^{(t-1)} - \epsilon^{(t)} \cdot \nabla_{\mathcal{L}
+        (\theta^{(t-1)})}
+$
 
 \subsection{Overfitting and underfitting}
 
@@ -414,7 +452,7 @@ training and test error is small (see figure \ref{fig:loss_plot}).
 
 In coming subsections we describe the most common techniques to prevent
 overfitting in neural networks.
-\footnotetext[2]{The simplest explanation is most likely the right one.}
+\footnotetext[3]{The simplest explanation is most likely the right one.}
 \subsubsection{$L_2$ Regularization}
 Following the Occam's razor principle\footnotemark , the extreme weights are
 likely to cause overfitting. We can reduce the overfitting by penalizing these
