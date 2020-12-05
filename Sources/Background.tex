@@ -402,22 +402,50 @@ goal is to minimize the selected loss function by adjusting the weights
 accordingly. The most common optimization algorithm used for training neural
 networks is \bld{gradient descent (GD)} and its derivatives. The idea behind GD
 is to alter the weights in the \bld{opposite direction of the gradient} of the
-loss function (the gradient's direction is the steepest ascent).
+loss function (the gradient's direction is the steepest ascent) in an iterative
+way.
 
-Since the dataset $\mathcal{D}$ can be very large or even infinite, we cannnot
-compute the gradient straight away. Instead, we sample the prior dataset and
-compute the sample's gradient. This method is called \bld{stochastic gradient
-    descent (SGD)}. The samples are called \bld{minibatches} and they can be
-processed at once by vectorization. Let us now describe the main variations of
-SGD.
+Since the dataset $\mathcal{D}$ can be very large, we cannnot compute the
+gradient straight away. Instead, we sample the prior dataset and update the
+weights with the sample's gradient. This method is called \bld{stochastic
+    gradient descent (SGD)} and converges faster than GD. The samples are called
+\bld{minibatches} and they can be processed at once by vectorization. Let us now
+describe the main variations of SGD.
 
 \bld{Stochastic gradient descent.} Let $\mathcal{B} \subseteq \mathcal{D}$ be
-the minibatch, $\nabla_\mathcal{L(\theta)}$ be the gradient of
-$\mathcal{L(\theta)}$
-$
-    \theta^{(t)} = \theta^{(t-1)} - \epsilon^{(t)} \cdot \nabla_{\mathcal{L}
-        (\theta^{(t-1)})}
-$
+the minibatch, $\nabla_\mathcal{L_\mathcal{D}(\theta)}$ be the gradient of
+$\mathcal{L}_\mathcal{D}(\theta)$, and $\theta_t$ denotes the weights in the
+step $t$ (similarly for other variables). The algorithm can be writen as:
+$$
+    \begin{array}{rl}
+        \Delta\theta_{t} & = - \epsilon_{t} \cdot \nabla_{\mathcal{L}_\mathcal{D}(\theta_{t})} \\
+        \theta_{t+1}     & = \theta_{t} + \Delta\theta_{t}
+    \end{array}
+    \quad \text{ for steps } t = 1,2,...
+$$
+The $0 < \epsilon \leq 1$ is called $\bld{learning rate}$ that controls the
+speed of model's learning. In plain SGD, the $\epsilon_t$ is fixed for every
+$t$. However, naturally, we want the model to learn faster in the beginning and
+slower as it converges and stabilize. The most straightforward way to do so, is
+to make use of a learning rate scheduler that alters the $\epsilon$ w.r.t. time.
+A more robust way is to change the $\epsilon$ in an \bld{adaptive} way. We want
+to have larger rates for smaller updates and smalelr rates for larger updates.
+The most common examples of this approach is \bld{AdaGrad} \cite{adagrad},
+\bld{AdaDelta} \cite{adadelta}, \bld{RMSProp}
+\footnote{
+    It was not published. However, it was proposed in a course by Geoff Hinton
+    \url{
+        http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf
+    }
+}.
+
+Another way to speed up the SGD is to stabilize the direction of the descent as
+it can oscillate. We add a \bld{momentum} to the new weights $\theta_{t+1}$ in
+the form of the previous update $\Delta\theta_{t-1}$ additionally to the
+$\Delta\theta_{t}$. This extension also helps to escape local minima. Finally,
+we would like to mention that the currently suggested optmization algorithm is
+\bld{Adam} \cite{adam} that effectively combines the both approaches (adaptive
+learning rate and momentum).
 
 \subsection{Overfitting and underfitting}
 
