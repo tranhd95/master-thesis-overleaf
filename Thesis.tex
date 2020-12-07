@@ -3,11 +3,13 @@
 % My packages
 \usepackage{todonotes}
 \usepackage{amsmath} % For definitions
+\usepackage{relsize}
 \usepackage{threeparttable}
 \usepackage{float}
 \usepackage{metalogo}
 \usepackage[T1]{fontenc}
 \usepackage{subcaption}
+\setlength{\skip\footins}{2cm}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Some of my favourite personal adjustments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -24,7 +26,11 @@
 \DeclareSIUnit\px{px}
 % \newcommand{\todo}[1]{\textcolor{red}{(#1)}}
 \newcommand{\bld}[1]{\textbf{#1}}
-
+\newcommand{\grad}{\nabla{\mathcal{L}}}
+\newcommand{\loss}{\mathcal{L}}
+\newcommand{\pd}[1]{\dfrac{\partial\loss}{\partial w_#1}}
+\newcommand{\pdj}{\dfrac{\partial\loss_j}{\partial w_i}}
+\newcommand{\prt}[2]{\dfrac{\partial #1}{\partial #2}}
 \sisetup{%
   detect-all           = true,
   detect-family        = true,
@@ -121,10 +127,10 @@
 \begin{document}
 
 \frontmatter
-%   \include{Sources/Title}
-%   \include{Sources/Declaration}
-%   \include{Sources/Acknowledgements}
-%   \include{Sources/Abstract}
+% \include{Sources/Title}
+% \include{Sources/Declaration}
+% \include{Sources/Acknowledgements}
+% \include{Sources/Abstract}
 \tableofcontents
 
 \mainmatter
@@ -141,13 +147,13 @@
 \bookmarksetup{startatroot}
 \backmatter
 
-\begingroup
-\let\clearpage\relax
-\glsaddall
+% \begingroup
+% \let\clearpage\relax
+% \glsaddall
 % \printglossary[type=\acronymtype]
 % \newpage
 % \printglossary
-\endgroup
+% \endgroup
 
 \printindex
 \begingroup
