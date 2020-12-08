@@ -226,22 +226,21 @@ describe different types of layers.
 
 \subsection{Convolutional Neural Network}
 In the following subsections we describe the layers of \bld{convolutional neural
-    networks} that are a special case of a feedforward networks. They thrive at
-image processing tasks as a result of a very effective way of feature
-extraction.
+    networks (CNNs} that are a special case of a feedforward networks. They thrive at
+image processing tasks because of very effective feature extraction.
 
 \subsubsection{Fully-connected Layer}
-The most basic layer is \textbf{fully-connected layer} (also known as
-\textbf{linear} or \textbf{dense} layer). It performs a transformation from
-\textbf{input vector} $\boldsymbol{x}$ of size $m$ into \textbf{output vector}
-$\boldsymbol{y}$ of size $n$. The transformation has two parameters, a
-\textbf{weight matrix} $\boldsymbol{W}$ of size $m \times n$ and \textbf{bias}
+The most basic layer is \bld{fully-connected layer} (also known as
+\bld{linear} or \bld{dense} layer). It performs a transformation from
+\bld{input vector} $x$ of size $m$ into \textbf{output vector}
+$y$ of size $n$. The transformation has two parameters, a
+\bld{weight matrix} $W$ of size $m \times n$ and \bld{bias}
 $\boldsymbol{b}$ of size $n$. Firstly, the input vector is weighted by $W$, then
-the bias is added, and finally an \textbf{activation function} $\boldsymbol{f}$
+the bias is added, and finally an \bld{activation function} $\phi$
 is applied to every element (see Section \ref{afunctions} for more details on
 activation functions).
 $$
-    y = f(W\cdot x + b)
+    y = \phi(W\cdot x + b)
 $$
 See figure \ref{fig:fcl} for a graph representation of a neural network composed
 of two fully-connected layers, where each node is a neuron, and each directed
@@ -256,29 +255,31 @@ edge is a weight.
 \end{figure}
 
 \subsubsection{Convolution Layer}
+
 The most important layer of CNNs is the \textbf{convolution layer}. It
-introduces a new concept of shared weights, which help us train deeper
+introduces a new concept of \bld{shared weights}, which help us train deeper
 architectures and is more suited for image processing tasks. To illustrate the
 convolution layer, imagine the input as a square of neurons, i.e., a
-two-dimensional \textbf{image} $\boldsymbol{I: (W, H) \rightarrow \real}$
-\todo{Zmatecna definice. Sjednotit styl notaci.}, where ${W}$ is the width and
-${H}$ is the height of the image.
+two-dimensional \bld{image} $I(x,y)$ which returns the output of $x,y$-th neuron 
+(pixel). The maximum values of $x$ and $y$ are the image's width and height. 
+We denote them as $I_w \in \mathds{Z}$ and $I_h \in \mathds{Z}$.
+
 
 In contrast with a fully-connected layer, we do not connect every input neuron
 to every output neuron. Instead, every output neuron is associated with a
 smaller region in the input image. Each association is defined by its
-\textbf{bias} $\boldsymbol{b}$ and $\textbf{weights}$ $\boldsymbol{K:(K_w, K_h)
-        \rightarrow \real}$, where $K_w$, $K_h$ is the region's width and height. The
-output of the layer is a downscaled image $\boldsymbol{Y:(W - K_w + 1,}$
-$\boldsymbol{H - K_h + 1)  \rightarrow \real}$, which is often called a
-\textbf{feature map}. The value of the $i, j$-th output neuron $Y(i,j)$ is
-defined by:
+\bld{bias} $b$ and \bld{weight matrix} $K$ of shape $K_w \times K_h$.
+We denote $K(k, l)$ as the $k,j$-th element of the matrix. The output of the layer
+is a downscaled image $Y(i,j)$ that is often referred to as the \bld{feature map}. 
+The image is downscaled to size $(I_w - K_w + 1) \times (I_h - K_h + 1$). 
+The value of the $i, j$-th output neuron $Y(i,j)$ is defined by:
 $$
-    Y(i, j) = f\left((I * K)(i,j) + b\right)
+    Y(i, j) = \phi\left((I * K)(i,j) + b\right)
 $$
 
-The $*$ operation is called \textbf{convolution}\todo{Fskutecnosti
-    cross-correlation. Doplnit poznamku.} and is defined as follows:
+where $\phi$ is an \bld{activation function} and the $*$ operation is called \bld{convolution} 
+that is defined as follows:\footnote{The definition is in fact the cross-correlation formula. 
+However, the methods are interchangeable in the context of CNNs.}
 
 $$
     (I * K)(x, y) = \sum\limits_{k = 1}^{K_w}\sum\limits_{l = 1}^{K_h}
@@ -295,9 +296,9 @@ approach also helps CNNs to adapt to image \textbf{translation invariance},
 i.e., the detected features do not depend on their positions in the input
 image.
 
-For illustration purpose, we have considered a two-dimensional inputs. However,
+For illustration purposes, we have considered a two-dimensional inputs. However,
 in practice, we often work with RGB or even RGB-D images represented by
-\textbf{tensors} of shape $(W, H, C)$, where $C$ is number of channels (e.g.
+\textbf{tensors} of shape $(W, H, C)$, where $C$ is the number of channels (e.g.
 three for classic RGB image).
 
 Another important parameter of the layer is \textbf{stride length}. It defines
@@ -365,10 +366,10 @@ for classification and regression tasks.
 
 \bld{Mean squared error (MSE)} is the most commonly used regression loss
 function. It is an average of squared errors. Error is defined as a difference
-(or distance) between predicted and actual value. Consider a dataset of $n$
-examples $\mathcal{D} = \{(x_i, a_i)\mid i = 1,...,n\}$ where $x_i$ is the input
-and $a_i$ is the actual value. Let $y_i = f^*(x_i; \theta)$ be the predicted
-output of the model based on the input $x_i$ parametrized by the model's weights
+(or distance) between predicted and actual value. Consider a \bld{dataset} of $n$
+examples $\mathcal{D} = \{(x_i, a_i)\mid i = 1,...,n\}$ where $x_i$ is the \bld{input}
+and $a_i$ is the \bld{actual} value. Let $y_i = f^*(x_i; \theta)$ be the \bld{predicted
+output} of the model based on the input $x_i$ parametrized by the model's weights
 $\theta$. We can then define MSE of dataset $\mathcal{D}$ as follows:
 $$
     \text{MSE}_{\mathcal{D}}(\theta) =
