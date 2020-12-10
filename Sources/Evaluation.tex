@@ -1,8 +1,17 @@
 \chapter{Evaluation}
-In this chapter, we introduce the provided datasets we evaluate the models on. We then set hypotheses about the assumed performances of the chosen models on our datasets. Next, we describe our process of training. We briefly mention the technologies we have used and how we have chosen our models' parameters. Finally, we present our achieved results and discuss them.
+In this chapter, we introduce the provided datasets we evaluate the models on.
+We then set hypotheses about the assumed performances of the chosen models on
+our datasets. Next, we describe our process of training. We briefly mention the
+technologies we have used and how we have chosen our models' parameters.
+Finally, we present our achieved results and discuss them.
 
 \section{Datasets}
-We are provided with three datasets by the company SANEZOO. Unfortunately, two of the datasets cannot be published as they are protected under a confidentiality agreement. However, we provide sufficient characteristics of the datasets. We summarize the basic information of the datasets in Table \ref{tab:datasets}. Detailed description is provided below the table.\todo{Doplnit chybejici udaje.}
+We are provided with three datasets by the company SANEZOO. Unfortunately, two
+of the datasets cannot be published as they are protected under a
+confidentiality agreement. However, we provide sufficient characteristics of the
+datasets. We summarize the basic information of the datasets in Table
+\ref{tab:datasets}. Detailed description is provided below the table.
+\todo{Doplnit chybejici udaje.}
 
 \begin{table}[h]
 	\centering
@@ -37,19 +46,43 @@ We are provided with three datasets by the company SANEZOO. Unfortunately, two o
 	\label{fig:candies}
 \end{figure}
 
-\bld{Candies dataset.} Only the first dataset is publishable; thus, we provide a visual example image in Figure \ref{fig:candies}. The images consist only of a single class -- a golden candy. The density of objects (how densely they cover the image) varies through the dataset (see Figure \ref{fig:candies}). Object occlusions can occur in dense images; therefore, the dataset is not trivial. However, compared to our other datasets, it is still a simpler dataset as it strictly contains only a single class without foreign objects. Therefore, we assign an easy difficulty to this dataset.
+\bld{Candies dataset.} Only the first dataset is publishable; thus, we provide a
+visual example image in Figure \ref{fig:candies}. The images consist only of a
+single class -- a golden candy. The density of objects (how densely they cover
+the image) varies through the dataset (see Figure \ref{fig:candies}). Object
+occlusions can occur in dense images; therefore, the dataset is not trivial.
+However, compared to our other datasets, it is still a simpler dataset as it
+strictly contains only a single class without foreign objects. Therefore, we
+assign an easy difficulty to this dataset.
 
 
-\bld{Metal parts dataset.} The second dataset consists of images with small metal parts (such as shafts, rings, casings). See Figure \ref{fig:parts} for rough illustration. The objects are placed in a plastic bin. There is always only one class of objects on a single image. The images are taken from a top-down perspective, similarly as in Figure \ref{fig:candies}. However, they are taken from various angles. The density of objects also differ through the dataset as in the first dataset (you can imagine a pile of metal parts).
+\bld{Metal parts dataset.} The second dataset consists of images with small
+metal parts (such as shafts, rings, casings). See Figure \ref{fig:parts} for
+rough illustration. The objects are placed in a plastic bin. There is always
+only one class of objects on a single image. The images are taken from a
+top-down perspective, similarly as in Figure \ref{fig:candies}. However, they
+are taken from various angles. The density of objects also differ through the
+dataset as in the first dataset (you can imagine a pile of metal parts).
 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[height=0.35\linewidth]{Sources/Figures/metal_parts.jpg}
-	\caption{An illustration of classes from metal parts dataset. Taken from \cite{parts}.}
+	\caption{An illustration of classes from metal parts dataset. Taken from
+		\cite{parts}.}
 	\label{fig:parts}
 \end{figure}
 
-\bld{Medical supplies dataset} The last set is made up of sequences of images taken from an assembly line's top view. The images capture a manual assembly of packages that are consisted of medical items (such as bandages, plastic cups, or surgery tools). We assign a hard difficulty to this dataset because of the non-static environment. To be more specific, the packages are in motion in some images; therefore, the objects are slightly blurred. Moreover, occlusion of objects occurs in the image very often since the operator does the packing manually, and the objects are stacked on top of each other. Some objects are tough to distinguish if they are next to each other (imagine a pile of cotton balls). The images are taken from above the operator similarly as in the first dataset.
+\bld{Medical supplies dataset} The last set is made up of sequences of images
+taken from an assembly line's top view. The images capture a manual assembly of
+packages that are consisted of medical items (such as bandages, plastic cups, or
+surgery tools). We assign a hard difficulty to this dataset because of the
+non-static environment. To be more specific, the packages are in motion in some
+images; therefore, the objects are slightly blurred. Moreover, occlusion of
+objects occurs in the image very often since the operator does the packing
+manually, and the objects are stacked on top of each other. Some objects are
+tough to distinguish if they are next to each other (imagine a pile of cotton
+balls). The images are taken from above the operator similarly as in the first
+dataset.
 
 \section{Hypotheses}
 Let us recapitulate the models we evaluate:
