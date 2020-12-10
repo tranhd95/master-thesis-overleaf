@@ -96,31 +96,70 @@ Additionally, we perform an experiment on RetinaNet with ResNet-101 and FPN
 models' original papers and the \bld{Detectron2's} benchmark.
 \renewcommand{\theenumi}{\alph{enumi}}
 \begin{enumerate}
-	\item Faster R-CNN serves as a baseline and will perform the worst on every
-	      dataset,
-	\item Cascade R-CNN should perform better than RetinaNet R-50; however, with
-	      slower inference speed,
-	\item RetinaNet R-50 should perform slightly better than Faster R-CNN and
-	      its inference speed will be the fastest,
+	\item Models will perform better on average on our datasets than on COCO
+	      datasets by a significant margin as the COCO dataset is very hard.
+	\item Faster R-CNN serves as a baseline and will perform the worst. Cascade
+	      R-CNN should perform better than RetinaNet R-50.
+	\item RetinaNet R-50 should have the fastest inference speed per image.
 	\item Increasing the depth of ResNet should improve the AP. We test this on
-	      RetinaNet R-101 with FPN.
-	\item The achieved AP for datasets should correspond to the difficulty.
+	      RetinaNet R-101 with FPN (RetinaNet R-101).
 \end{enumerate}
 
 \section{Training}
-\begin{itemize}
-	\item Jak byly modely natrenovany?
-	      \begin{itemize}
-		      \item Technologie (PyTorch, Detectron2, Google Colab, ...)
-		      \item Jake parametry a hyperparametry
-		      \item (Hardware)
-		      \item Grafy ztrátových funkcí
-	      \end{itemize}
-\end{itemize}
 The models were evaluated by \bld{Detectron2} object detection framework
-\cite{detectron} based on PyTorch deep learning Python library. The framework
-includes various pretrained object detection models and backbones. They also
-show the benchmark results of mdoels on the project's public repository.
+\cite{detectron} based on Python deep learning library \bld{PyTorch}
+\cite{pytorch}. Detectron2 includes various pretrained object detection
+models and tools for creating, training and evaluating of the models. We have
+modified the framework's \texttt{DefaultTrainer} to meet our needs. We list
+some of the modifications below:
+\begin{itemize}
+	\item The \texttt{DefaultTrainer} trains the model for a given number of
+	      iterations (one training step of a minibatch). However, it is more
+	      common to set the training for a given number of \bld{epochs}. One
+	      epoch corresponds to one pass of the full training set of data. Thus,
+	      the number of iterations of one epoch corresponds to fraction of the
+	      training set's size to minibatch size. We have implemented this
+	      simple conversion.
+	\item The interval of a periodical output (\bld{checkpoint}) of the
+	      training process was fixed. We have modified the behavior to output the
+	      intermediate results after an arbitrary number of iterations.
+	\item By default, the training process does not show the validation loss in
+	      every checkpoint output. Therefore, we have implemented a
+	      \texttt{ValidationLoss} hook that computes the validation loss after every
+	      checkpoint's training step.
+\end{itemize}
+To train a model with Detectron2, we had to convert our datasets' annotations to
+Detectron2's standard format.
+\footnote{
+	\url{https://detectron2.readthedocs.io/tutorials/datasets.html
+		\#standard-dataset-dicts}
+}
+The format is a list of Python dictionaries.Each dictionary describes each image
+and the objects included in the image. We have converted the datasets to the
+appropriate format. To preserve the conversions for later use, we have exported
+them  to JSON files. We have randomly split the datasets into training, test,
+and validation sets by \bld{70:15:15 ratio}.
+
+The training process is very computationally intensive and requires CUDA-enabled
+GPUs.\footnote{CUDA is NVIDIA's interface for parallel computing. See
+	\url{https://developer.nvidia.com/cuda-zone}} We have therefore utilized the
+\bld{Google Collaboratory} (or Google
+Colab) cloud service that offers limited GPU usage. Every Google Colab instance
+is accessed through so-called Colab notebooks -- interactive environments that
+let users add Python code cells and execute them.\footnote{
+	They are in fact a cloud-hosted Jupyter Notebooks. See
+	\url{https://jupyter.org/} for more details.
+} The outputs of the code cells are placed below the cell after the execution.
+Since the service aims mainly at users experimenting with machine learning,
+there are many relevant libraries preinstalled.
+
+Every used backbone has been pretrained on an ImageNet database \cite{imagenet}.
+The detectors has been pretrained on the COCO datasets \cite{coco} for about
+37 epochs \cite{detectron}.
+
+other parameters
+
+how long
 
 
 
