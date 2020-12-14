@@ -45,11 +45,21 @@ the previous or next step (if the user provides all the necessary information).
     \label{fig:wizard}
 \end{figure}
 
-The frontend communicates with the backend through the HTTP application
-programming interface (API) composed of uniform resource identifier (URI)
-endpoints. The API will consist mainly \texttt{GET} and \texttt{POST} requests.
-For example, if we would like to retrieve a list of datasets, we would send a
-GET request to a URI of the form similar to \texttt{<api\_address>/datasets}.
+The frontend communicates with the backend through the HTTP \bld{application
+    programming interface (API)} composed of \bld{uniform resource identifier
+    (URI)}
+endpoints. The API will consist mainly GET and POST requests. For example, if we
+would like to retrieve a list of datasets, we would send a GET request to a URI
+of the form similar to \texttt{<api\_address>/datasets}. The POST requests will
+be mainly used for setting up the training details and initiating the training
+process. See Figure \ref{fig:tool_design} for an illustration of the communication.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.85\linewidth]{Sources/Figures/tool_design.png}
+    \caption{A diagram of bennchmark tool's design.}
+    \label{fig:tool_design}
+\end{figure}
 
 \section{Implementation}
 Fortunately, we could implement this layout with ease by using a Material Design
