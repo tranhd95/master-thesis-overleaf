@@ -10,6 +10,19 @@
 \usepackage[T1]{fontenc}
 \usepackage{subcaption}
 \usepackage{siunitx}
+\usepackage{listings}
+\lstdefinestyle{mystyle}{
+    basicstyle=\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,       
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Some of my favourite personal adjustments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -89,7 +102,7 @@
   \setmainfont{Minion Pro}
 \else
   \usepackage[lf]{ebgaramond}
-  \usepackage[oldstyle,scale=0.7]{sourcecodepro}
+  \usepackage[oldstyle,scale=0.75]{sourcecodepro}
   \singlespacing
 \fi
 
@@ -136,12 +149,14 @@
 \mainmatter
 
 \let\cleardoublepage\clearpage
+
 \include{Sources/Introduction}
 \include{Sources/Background}
 \include{Sources/Models}
 \include{Sources/Evaluation}
 \include{Sources/Tool}
 \include{Sources/Conclusion}
+
 % This ensures that the subsequent sections are being included as root
 % items in the bookmark structure of your PDF reader.
 \bookmarksetup{startatroot}
