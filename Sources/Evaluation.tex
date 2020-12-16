@@ -91,9 +91,8 @@ Let us recapitulate the models we evaluate:
 	\item Cascade R-CNN with ResNet-50 backbone with FPN (Cascade R-CNN),
 	\item RetinaNet with ResNet-50 backbone with FPN (RetinaNet R-50).
 \end{itemize}
-Additionally, we perform an experiment on RetinaNet with ResNet-101 and FPN
-(see next). We set these hypotheses based on the results observed in the
-models' original papers and the \bld{Detectron2's} benchmark.
+We set these hypotheses based on the results observed in the models' original
+papers and the \bld{Detectron2's} benchmark.
 \renewcommand{\theenumi}{\alph{enumi}}
 \begin{enumerate}
 	\item Models will perform better on average on our datasets than on COCO
@@ -166,4 +165,66 @@ What parameters did we use? Batch size, learning rate etc.
 	\item AP tabulka
 	\item Diskuze
 \end{itemize}
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{l|l|l|l|l|l|l}
+		Model                  & AP    & AP50  & AP75  & APl & APm   & APs   \\
+		\hline
+		RetinaNet R-50 FPN     & 66.09 & 99.27 & 77.98 & -   & 66.12 & 30.00 \\
+		Faster R-CNN R-50      & 65.99 & 98.98 & 78.49 & -   & 66.00 & 60.00 \\
+		Cascade R-CNN R-50 FPN & 65.24 & 97.93 & 77.13 & -   & 65.27 & 25.00
+	\end{tabular}
+	\caption{AP for candies dataset}
+	\label{tab:candies}
+\end{table}
+
+\begin{figure}[htp]
+	\centering
+	\begin{minipage}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{Sources/Figures/candies/Faster R-CNN R-50.png}
+	\end{minipage}\hfill
+	\begin{minipage}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{Sources/Figures/candies/Cascade R-CNN R-50 FPN.png}
+	\end{minipage}\par
+	\vskip\floatsep
+	\includegraphics[width=0.5\textwidth]{Sources/Figures/candies/RetinaNet R-50 FPN.png}
+	\caption{Loss curves of trained models on candies dataset.}
+\end{figure}
+
+\begin{figure}[h]
+	\includegraphics[width=\linewidth]{Sources/Figures/metal/metal_ap.png}
+	\caption{AP table for metal parts dataset.}
+\end{figure}
+
+\begin{figure}[htp]
+	\centering
+	\begin{minipage}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{Sources/Figures/metal/metal_frcnn_loss.png}
+	\end{minipage}\hfill
+	\begin{minipage}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{Sources/Figures/metal/metal_cascade_loss.png}
+	\end{minipage}\par
+	\vskip\floatsep
+	\includegraphics[width=0.5\textwidth]{Sources/Figures/metal/metal_retina_loss.png}
+	\caption{Loss curves of trained models on metal parts dataset.}
+\end{figure}
+
+\begin{figure}[h]
+	\includegraphics[width=\linewidth]{Sources/Figures/medical_ap_heatmap.png}
+	\caption{AP table for medical dataset.}
+\end{figure}
+
+\begin{figure}[htp]
+	\centering
+	\begin{minipage}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{Sources/Figures/medical/frcnn_losses.png}
+	\end{minipage}\hfill
+	\begin{minipage}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{Sources/Figures/medical/cascade_losses.png}
+	\end{minipage}\par
+	\vskip\floatsep
+	\includegraphics[width=0.5\textwidth]{Sources/Figures/medical/retina_losses.png}
+	\caption{Loss curves of trained models on medical dataset.}
+\end{figure}
 
