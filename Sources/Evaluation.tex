@@ -87,16 +87,18 @@ dataset.
 \section{Hypotheses}
 Let us recapitulate the models we evaluate:
 \begin{itemize}
-	\item Faster R-CNN with ResNet-50 backbone without FPN (Faster R-CNN),
-	\item Cascade R-CNN with ResNet-50 backbone with FPN (Cascade R-CNN),
-	\item RetinaNet with ResNet-50 backbone with FPN (RetinaNet R-50).
+	\item Faster R-CNN with ResNet-50 backbone without FPN,
+	\item Cascade R-CNN with ResNet-50 backbone with FPN,
+	\item RetinaNet with ResNet-50 backbone with FPN.
 \end{itemize}
-We set these hypotheses based on the results observed in the models' original
-papers and the \bld{Detectron2's} benchmark.
+We set hypotheses based on the results obtained in the models' original papers
+\cite{fasterrcnn,cascadercnn,retinanet} and the \bld{Detectron2's} benchmark
+results \cite{detectron}.
 \renewcommand{\theenumi}{\alph{enumi}}
 \begin{enumerate}
 	\item Models will perform better on average on our datasets than on COCO
-	      datasets by a significant margin as the COCO dataset is very hard.
+	      datasets \cite{coco} by a significant margin as the COCO dataset is
+	      very hard.
 	\item Faster R-CNN serves as a baseline and will perform the worst. Cascade
 	      R-CNN should perform better than RetinaNet R-50.
 	\item RetinaNet R-50 should have the fastest inference speed per image.
@@ -150,34 +152,87 @@ let users add Python code cells and execute them.\footnote{
 Since the service aims mainly at users experimenting with machine learning,
 there are many relevant libraries preinstalled.
 
-Every used backbone has been pretrained on an ImageNet database \cite{imagenet}.
-The detectors has been pretrained on the COCO datasets \cite{coco} for about
-37 epochs \cite{detectron}.
+Detectron2 offers pretrained detectors on the COCO dataset \cite{coco}. Each
+model also contains a pretrained backbone on the ImageNet database
+\cite{imagenet}. We retrain these models on our datasets by changing the number
+of output classes.
 
-Did we use data augmentation?
+We use Detectron2's predefined data augmentation for every dataset. The first
+augmentation method is \texttt{ResizeShortestEdge} that scales the images while
+preserving the image's aspect ratio. The second method is \texttt{RandomFlip}
+that flips the image horizontally or vertically with a given probability. We
+train every model with SGD with momentum and weight decay ($\mathcal{L}_2$
+regularization). The learning rate is by default scheduled with
+\texttt{WarmupMultiStepLR} that simply starts with a low learning rate and
+increases to a defined base learning rate. We summarize the different parameters
+for each model and datasets in the Table \ref{tab:parameters}.
 
-What parameters did we use? Batch size, learning rate etc.
-
-\section{Results}
-\begin{itemize}
-	\item AP tabulka
-	\item Diskuze
-\end{itemize}
 
 \begin{table}[h]
 	\centering
-	\begin{tabular}{l|l|l|l|l|l|l}
-		Model                  & AP    & AP50  & AP75  & APl & APm   & APs   \\
+	\begin{tabular}{l|c|c|c}
+		                            & Minibatch size & Learning rate & Epochs \\
 		\hline
-		RetinaNet R-50 FPN     & 66.09 & 99.27 & 77.98 & -   & 66.12 & 30.00 \\
-		Faster R-CNN R-50      & 65.99 & 98.98 & 78.49 & -   & 66.00 & 60.00 \\
-		Cascade R-CNN R-50 FPN & 65.24 & 97.93 & 77.13 & -   & 65.27 & 25.00
+		\textit{Candies}            &                &               &        \\
+		\hspace{0.1cm}Faster R-CNN  & 8              & 0.001         & 60     \\
+		\hspace{0.1cm}Cascade R-CNN & 8              & 0.001         & 70     \\
+		\hspace{0.1cm}RetinaNet     & 8              & 0.001         & 70     \\
+		\hline
+		\textit{Metal parts}        &                &               &        \\
+		\hspace{0.1cm}Faster R-CNN  & 8              & 0.001         & 13     \\
+		\hspace{0.1cm}Cascade R-CNN & 16             & 0.002         & 40     \\
+		\hspace{0.1cm}RetinaNet     & 16             & 0.002         & 40     \\
+		\hline
+		\textit{Medical}            &                &               &        \\
+		\hspace{0.1cm}Faster R-CNN  & 8              & 0.001         & 40     \\
+		\hspace{0.1cm}Cascade R-CNN & 16             & 0.002         & 50     \\
+		\hspace{0.1cm}RetinaNet     & 16             & 0.002         & 50
+	\end{tabular}
+	\caption{Chosen training parameters for each model.}
+	\label{tab:parameters}
+\end{table}
+The other parameters such as model-specific parameters or optimizer parameters
+are kept at default values.\footnote{Can be observed at
+	\url{https://github.com/facebookresearch/detectron2/tree/master/configs} and \\
+	\url{https://detectron2.readthedocs.io/modules/config.html?highlight=configs\#config-references}}
+We stopped the training earlier when we observed that the model's loss was
+changing only by small margins. After training we chose the best weights by
+observing the value of the validation loss w.r.t. to the value of the training
+loss (see Figures \ref{fig:candies_loss}, \ref{fig:metal_loss}, and
+\ref{fig:medical_loss}). Generally, we were looking for the lowest validation
+loss. However, if we observed an overfitting pattern, we chose earlier weights
+to moderate it.
+\section{Results}
+We present the evaluation results in the following sections that are divided by
+the datasets.
+
+\subsection{Candies dataset}
+The resulting AP metrics for the candies dataset can be seen in Table
+\ref{tab:candies}. We can see that the AP is indeed higher than for the COCO
+dataset (44.3 for Cascade R-CNN \cite{detectron}). Another observation we make
+is that the main APs (AP, AP50, AP75) do not differ that much. And in fact,
+they do not match with our hypothesis (b) as the Cascade R-CNN is the worst
+model. We strongly believe that this is caused by small dataset size. The
+test set consists only of 22 images. The random sample of test images can
+greatly affect the resulting AP as the small sample may not cover most of the
+cases of the images. Moreover the small training size also causes overfitting
+as we can see in the Figure \ref{fig:candies_loss}.
+
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l|l|l|l|l|l|l}
+		Model                  & AP    & AP$_{50}$ & AP$_{75}$ & AP$_l$ & AP$_m$ & AP$_s$ \\
+		\hline
+		RetinaNet R-50 FPN     & 66.09 & 99.27     & 77.98     & -      & 66.12  & 30.00  \\
+		Faster R-CNN R-50      & 65.99 & 98.98     & 78.49     & -      & 66.00  & 60.00  \\
+		Cascade R-CNN R-50 FPN & 65.24 & 97.93     & 77.13     & -      & 65.27  & 25.00
 	\end{tabular}
 	\caption{AP for candies dataset}
 	\label{tab:candies}
 \end{table}
 
-\begin{figure}[htp]
+\begin{figure}[H]
 	\centering
 	\begin{minipage}{0.5\textwidth}
 		\includegraphics[width=\textwidth]{Sources/Figures/candies/Faster R-CNN R-50.png}
@@ -188,14 +243,16 @@ What parameters did we use? Batch size, learning rate etc.
 	\vskip\floatsep
 	\includegraphics[width=0.5\textwidth]{Sources/Figures/candies/RetinaNet R-50 FPN.png}
 	\caption{Loss curves of trained models on candies dataset.}
+	\label{fig:candies_loss}
 \end{figure}
 
-\begin{figure}[h]
+\subsection{Metal parts dataset}
+\begin{figure}[H]
 	\includegraphics[width=\linewidth]{Sources/Figures/metal/metal_ap.png}
 	\caption{AP table for metal parts dataset.}
 \end{figure}
 
-\begin{figure}[htp]
+\begin{figure}[H]
 	\centering
 	\begin{minipage}{0.5\textwidth}
 		\includegraphics[width=\textwidth]{Sources/Figures/metal/metal_frcnn_loss.png}
@@ -206,14 +263,17 @@ What parameters did we use? Batch size, learning rate etc.
 	\vskip\floatsep
 	\includegraphics[width=0.5\textwidth]{Sources/Figures/metal/metal_retina_loss.png}
 	\caption{Loss curves of trained models on metal parts dataset.}
+	\label{fig:metal_loss}
 \end{figure}
 
-\begin{figure}[h]
+\subsection{Medical supplies dataset}
+
+\begin{figure}[H]
 	\includegraphics[width=\linewidth]{Sources/Figures/medical_ap_heatmap.png}
 	\caption{AP table for medical dataset.}
 \end{figure}
 
-\begin{figure}[htp]
+\begin{figure}[H]
 	\centering
 	\begin{minipage}{0.5\textwidth}
 		\includegraphics[width=\textwidth]{Sources/Figures/medical/frcnn_losses.png}
@@ -224,5 +284,6 @@ What parameters did we use? Batch size, learning rate etc.
 	\vskip\floatsep
 	\includegraphics[width=0.5\textwidth]{Sources/Figures/medical/retina_losses.png}
 	\caption{Loss curves of trained models on medical dataset.}
+	\label{fig:medical_loss}
 \end{figure}
 
