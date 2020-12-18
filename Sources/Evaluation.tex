@@ -210,28 +210,31 @@ the datasets.
 The resulting AP metrics for the candies dataset can be seen in Table
 \ref{tab:candies}. We can see that the AP is indeed higher than for the COCO
 dataset (44.3 for Cascade R-CNN \cite{detectron}). Another observation we make
-is that the main APs (AP, AP50, AP75) do not differ that much. And in fact,
-they do not match with our hypothesis (b) as the Cascade R-CNN is the worst
-model. We strongly believe that this is caused by small dataset size. The
+is that the main APs (AP, AP$_{50}$, AP$_{75}$) do not differ that much. And
+in fact, they do not match with our hypothesis (b) as the Cascade R-CNN is the
+worst model. We strongly believe that this is caused by small dataset size. The
 test set consists only of 22 images. The random sample of test images can
 greatly affect the resulting AP as the small sample may not cover most of the
 cases of the images. Moreover the small training size also causes overfitting
 as we can see in the Figure \ref{fig:candies_loss}.
 
-
 \begin{table}[H]
 	\centering
 	\begin{tabular}{l|l|l|l|l|l|l}
-		Model                  & AP    & AP$_{50}$ & AP$_{75}$ & AP$_l$ & AP$_m$ & AP$_s$ \\
+		Model                  & AP    & AP$_{50}$ & AP$_{75}$ & AP$_\text{large}$ & AP$_\text{medium}$ & AP$_\text{small}$ \\
 		\hline
-		RetinaNet R-50 FPN     & 66.09 & 99.27     & 77.98     & -      & 66.12  & 30.00  \\
-		Faster R-CNN R-50      & 65.99 & 98.98     & 78.49     & -      & 66.00  & 60.00  \\
-		Cascade R-CNN R-50 FPN & 65.24 & 97.93     & 77.13     & -      & 65.27  & 25.00
+		RetinaNet R-50 FPN     & 66.09 & 99.27     & 77.98     & -                 & 66.12              & 30.00             \\
+		Faster R-CNN R-50      & 65.99 & 98.98     & 78.49     & -                 & 66.00              & 60.00             \\
+		Cascade R-CNN R-50 FPN & 65.24 & 97.93     & 77.13     & -                 & 65.27              & 25.00
 	\end{tabular}
-	\caption{AP for candies dataset}
+	\caption{AP for candies dataset. AP$_\text{large}$ could not be computed
+		simply because there were not any larger bounding boxes.}
 	\label{tab:candies}
 \end{table}
-
+Nevertheless, we can see that training a small dataset on our datasets can
+produce relatively sufficient performance that can be used for additional
+annotation of the datasets by using the models' predictions.
+\todo{Pridat inference time}
 \begin{figure}[H]
 	\centering
 	\begin{minipage}{0.5\textwidth}
