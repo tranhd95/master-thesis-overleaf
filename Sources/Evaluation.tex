@@ -220,7 +220,7 @@ as we can see in the Figure \ref{fig:candies_loss}.
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{l|l|l|l|l|l|l}
+	\begin{tabular}{l|c|c|c|c|c|c}
 		Model                  & AP    & AP$_{50}$ & AP$_{75}$ & AP$_\text{large}$ & AP$_\text{medium}$ & AP$_\text{small}$ \\
 		\hline
 		RetinaNet R-50 FPN     & 66.09 & 99.27     & 77.98     & -                 & 66.12              & 30.00             \\
@@ -233,8 +233,27 @@ as we can see in the Figure \ref{fig:candies_loss}.
 \end{table}
 Nevertheless, we can see that training a small dataset on our datasets can
 produce relatively sufficient performance that can be used for additional
-annotation of the datasets by using the models' predictions.
-\todo{Pridat inference time}
+annotation of the datasets by using the models' predictions. The measured
+average inference times of each model is listed below in Table
+\ref{tab:candies_time}. It was evaluated on Google Colab with NVIDIA Tesla T4
+GPU and Intel Xeon CPU 2.20GHz. Each image had 300$\times$400px resolution. We
+can see that RetinaNet is indeed the fastest of all models.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l|c|c}
+		Model                  & seconds per image & FPS                               \\
+		\hline
+		RetinaNet R-50 FPN     & 0.102             & \scriptsize $\sim$\normalsize9.80 \\
+		Cascade R-CNN R-50 FPN & 0.167             & \scriptsize $\sim$\normalsize5.99 \\
+		Faster R-CNN R-50      & 0.178             & \scriptsize $\sim$\normalsize5.62 \\
+	\end{tabular}
+	\caption{AP for candies dataset. AP$_\text{large}$ could not be computed
+		simply because there were not any larger bounding boxes.}
+	\label{tab:candies_time}
+\end{table}
+
+
 \begin{figure}[H]
 	\centering
 	\begin{minipage}{0.5\textwidth}
