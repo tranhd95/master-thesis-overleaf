@@ -233,8 +233,36 @@ as we can see in the Figure \ref{fig:candies_loss}.
 \end{table}
 Nevertheless, we can see that training a small dataset on our datasets can
 produce relatively sufficient performance that can be used for additional
-annotation of the datasets by using the models' predictions. The measured
-average inference times of each model is listed below in Table
+annotation of the datasets by using the models' predictions. The Figure
+\ref{fig:candies_hard} shows an hard example of dense image with two false
+positive predictions by RetinaNet model. In the top left corner of the image,
+the model falsely detected a candy between two correctly detected candies. The
+second false prediction is more interesting. The model predicted a candy out of
+an area that actually looks like a candy to human eyes. But in fact, it is
+the ends of two candy packagings that form the illusion.
+
+\begin{figure}[H]
+
+	\begin{subfigure}[t]{0.5\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{Sources/Figures/candies/actual_pred.png}
+		\caption{The red rectangles are actual annotations. The green dots are
+			the centers of the predictions. We do not include the rectangles for
+			clarity as there are a lot of objects.}
+
+	\end{subfigure}
+	\begin{subfigure}[t]{0.5\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{Sources/Figures/candies/false_positive.png}
+		\caption{The false positive predictions.}
+
+	\end{subfigure}
+
+	\caption{Hard image predictions by RetinaNet.}
+	\label{fig:candies_hard}
+\end{figure}
+
+The measured average inference times of each model is listed below in Table
 \ref{tab:candies_time}. It was evaluated on Google Colab with NVIDIA Tesla T4
 GPU and Intel Xeon CPU 2.20GHz. Each image had 300$\times$400px resolution. We
 can see that RetinaNet is indeed the fastest of all models.
@@ -253,7 +281,6 @@ can see that RetinaNet is indeed the fastest of all models.
 	\label{tab:candies_time}
 \end{table}
 
-
 \begin{figure}[H]
 	\centering
 	\begin{minipage}{0.5\textwidth}
@@ -269,6 +296,7 @@ can see that RetinaNet is indeed the fastest of all models.
 \end{figure}
 
 \subsection{Metal parts dataset}
+Hello, this is metal parts.
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{Sources/Figures/metal/metal_ap.png}
 	\caption{AP table for metal parts dataset.}
