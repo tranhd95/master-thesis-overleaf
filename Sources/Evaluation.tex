@@ -85,6 +85,7 @@ balls). The images are taken from above the operator similarly as in the first
 dataset.
 
 \section{Hypotheses}
+\label{sec:hypotheses}
 Let us recapitulate the models we evaluate:
 \begin{itemize}
 	\item Faster R-CNN with ResNet-50 backbone without FPN,
@@ -206,7 +207,7 @@ to moderate it.
 We present the evaluation results in the following sections that are divided by
 the datasets.
 
-\subsection{Candies dataset}
+\subsection*{Candies dataset}
 The resulting AP metrics for the candies dataset can be seen in Table
 \ref{tab:candies}. We can see that the AP is indeed higher than for the COCO
 dataset (44.3 for Cascade R-CNN \cite{detectron}). Another observation we make
@@ -295,12 +296,56 @@ can see that RetinaNet is indeed the fastest of all models.
 	\label{fig:candies_loss}
 \end{figure}
 
-\subsection{Metal parts dataset}
-Hello, this is metal parts.
+\subsection*{Metal parts dataset}
+Since there are more classes in metal parts dataset, we visualize the metrics
+as a heatmap in the Figure \ref{fig:metal_ap}. The loss curves are shown in
+the Figure \ref{fig:metal_loss}. The results for this dataset correspond more to
+the assumptions we have made in Section \ref{sec:hypotheses}. We believe this is
+because of the larger size of the dataset. We can see that there is a
+significant difference between the worst model Faster R-CNN and the best
+performing model Cascade R-CNN (\small$\sim$\normalsize12 AP difference). The
+main AP metric ratio between models is relatively similar among all classes
+except the class 1, class 2, and class 4. RetinaNet can predict the first two
+classes the best. We are not entirely sure of this behavior; however, both
+classes are of similar size that is greater than size of the other classes. This
+could suggest that the RetinaNet can perform better on objects of a bigger size.
+
 \begin{figure}[H]
 	\includegraphics[width=\linewidth]{Sources/Figures/metal/metal_ap.png}
 	\caption{AP table for metal parts dataset.}
+	\label{fig:metal_ap}
 \end{figure}
+
+The hardest images for prediction were those with the class 4. The objects of
+class 4 are relatively small. On top of that, they are very densely arranged in
+the image (see Figure \ref{fig:metal_example} for illustration).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Sources/Figures/metal/example.png}
+	\caption{An illustration of density of metal parts dataset class 4
+		objects.}
+	\label{fig:metal_example}
+\end{figure}
+
+The measured inference times were greater than on candies dataset because of
+larger image size (960$\times$800px). Evaluation was performed on the same
+hardware specifications. The results are dipslayed in the Table
+\ref{tab:metal_time}.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l|c|c}
+		Model                  & seconds per image & FPS                                \\
+		\hline
+		RetinaNet R-50 FPN     & 0.092             & \scriptsize $\sim$\normalsize10.87 \\
+		Cascade R-CNN R-50 FPN & 0.180             & \scriptsize $\sim$\normalsize5.55  \\
+		Faster R-CNN R-50      & 0.259             & \scriptsize $\sim$\normalsize3.86  \\
+	\end{tabular}
+	\caption{AP for candies dataset. AP$_\text{large}$ could not be computed
+		simply because there were not any larger bounding boxes.}
+	\label{tab:metal_time}
+\end{table}
 
 \begin{figure}[H]
 	\centering
@@ -316,12 +361,31 @@ Hello, this is metal parts.
 	\label{fig:metal_loss}
 \end{figure}
 
-\subsection{Medical supplies dataset}
+
+\subsection*{Medical supplies dataset}
+The resulting metrics visualized in the Figure \ref{fig:medical_ap} suggest that
+we have overestimated the dataset's difficulty as we have achieved AP higher
+than 80 for every model. Cascade R-CNN is indeed the best model but the
+differences are not that big as in previous dataset. We suspect that the reason
+behind the outstanding performance is that the very similar or even almost
+identical images repeat in the dataset. This happens because the items in the
+medical packages have prescribed locations and quantities. Therefore, the most
+significant variance in the images is the arms of the human operator assembling
+the packages. The most challenging class to predict was class 7.  The objects of
+class 7 are white medical bandages (band-aids). The operator always places four
+of those bandages in the package. Because the bandages are white, it is hard to
+detect the correct quantity. The AP$_{\text{medium}}$ is low due to the same
+problem. Most of the medium objects were the bandages.
 
 \begin{figure}[H]
-	\includegraphics[width=\linewidth]{Sources/Figures/medical_ap_heatmap.png}
-	\caption{AP table for medical dataset.}
+	\includegraphics[width=\linewidth]{Sources/Figures/medical/medical_ap.png}
+	\caption{AP table for medical supplies dataset.}
+	\label{fig:medical_ap}
 \end{figure}
+
+Despite the exceptional results, the loss curves in Figure
+\ref{fig:medical_loss} suggest an overfitting problem. We again believe that
+the main reason of the issue is a relatively small dataset size.
 
 \begin{figure}[H]
 	\centering
@@ -336,4 +400,38 @@ Hello, this is metal parts.
 	\caption{Loss curves of trained models on medical dataset.}
 	\label{fig:medical_loss}
 \end{figure}
+
+The medical supplies dataset had the largest images by resolution
+(2464$\times$820px). Therefore, the inference times were also the highest (see
+Table \ref{tab:medical_times}).
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l|c|c}
+		Model                  & seconds per image & FPS                               \\
+		\hline
+		RetinaNet R-50 FPN     & 0.104             & \scriptsize $\sim$\normalsize9.61 \\
+		Cascade R-CNN R-50 FPN & 0.202             & \scriptsize $\sim$\normalsize4.95 \\
+		Faster R-CNN R-50      & 0.288             & \scriptsize $\sim$\normalsize3.47 \\
+	\end{tabular}
+	\caption{AP for candies dataset. AP$_\text{large}$ could not be computed
+		simply because there were not any larger bounding boxes.}
+	\label{tab:medical_times}
+\end{table}
+
+\subsection*{Summary}
+We would like to point out and sum up the main observations of our evaluation
+results in a few points below:
+\begin{itemize}
+	\item All models on all datasets overcame the COCO dataset AP (around 44 AP
+	      for Cascade R-CNN).
+	\item It is known that the bigger datasets produce better and more robust
+	      models; however, a small dataset size such as in the case of candies dataset
+	      can produce a sufficient model, e.g., for semi-automatic annotation uses
+	      (the model predicts the bounding boxes and human annotator examines the
+	      results and, if necessary, adjust the boundaries).
+\end{itemize}
+
+
+
 
