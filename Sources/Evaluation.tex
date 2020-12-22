@@ -184,7 +184,7 @@ for each model and datasets in the Table \ref{tab:parameters}.
 		\hspace{0.1cm}Cascade R-CNN & 16             & 0.002         & 40     \\
 		\hspace{0.1cm}RetinaNet     & 16             & 0.002         & 40     \\
 		\hline
-		\textit{Medical}            &                &               &        \\
+		\textit{Medical supplies}   &                &               &        \\
 		\hspace{0.1cm}Faster R-CNN  & 8              & 0.001         & 40     \\
 		\hspace{0.1cm}Cascade R-CNN & 16             & 0.002         & 50     \\
 		\hspace{0.1cm}RetinaNet     & 16             & 0.002         & 50
@@ -205,7 +205,8 @@ loss. However, if we observed an overfitting pattern, we chose earlier weights
 to moderate it.
 \section{Results}
 We present the evaluation results in the following sections that are divided by
-the datasets.
+the datasets. At the end of the section we sum up the achievements and
+observations.
 
 \subsection*{Candies dataset}
 The resulting AP metrics for the candies dataset can be seen in Table
@@ -430,6 +431,12 @@ results in a few points below:
 	      can produce a sufficient model, e.g., for semi-automatic annotation uses
 	      (the model predicts the bounding boxes and human annotator examines the
 	      results and, if necessary, adjust the boundaries).
+	\item The inference speed of RetinaNet is indeed the fastest. The
+	      trade-off between AP and the speed is not that significant. RetinaNet is
+	      about two times faster than Cascade R-CNN while achieving similar AP.
+	\item Models still struggle with images with high density of objects.
+	      However, we believe that much larger dataset size and careful
+	      fine-tuning of models could achieve decent results.
 \end{itemize}
 
 
