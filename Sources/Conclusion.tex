@@ -1,23 +1,58 @@
 \chapter{Conclusion}
-\begin{itemize}
-    \item What have we done
-          \begin{itemize}
-              \item Conduct a research on object detection methods
-              \item Choose one of each type with a baseline
-              \item Description with introduction to relevant topis from DL
-              \item Set hypotheses based on prior benchmarks
-              \item Train and evaluated
-              \item Results
-              \item Implemented a benchmark tool for future evaluations
-          \end{itemize}
-\end{itemize}
 
-One of the thesis's goals was to conduct research and evaluate state-of-the-art deep learning object detection models on datasets provided by the company SANEZOO EUROPE.
-We have chosen the well-known model Faster R-CNN as a baseline. The next selected model is Cascade R-CNN, which is an extension to the Faster R-CNN. Both models represent a family of detectors called two-stage detectors. Finally, we have chosen a representative of one -stage detectors -- RetinaNet.
+One of the thesis's goals was to conduct research and evaluate state-of-the-art
+deep learning object detection models on real-world datasets provided by the
+company SANEZOO EUROPE. We have chosen the well-known model Faster R-CNN as a
+baseline. The next selected model is Cascade R-CNN, which is an extension to the
+Faster R-CNN. Both models represent a family of detectors called two-stage
+detectors. Finally, we have chosen a representative of one -stage detectors --
+RetinaNet.
 
-At the beginning of the work, we briefly introduced the main concepts of deep neural networks. Then we have described the model architectures with emphasis on understandability by gradually introducing new building blocks of the detectors.
+At the beginning of the work, we introduced the object detection task's aim and
+how to measure the object detection models' performance. We briefly described
+the benefits of the deep learning approach compared to the traditional methods.
+Afterward, we reviewed the main concepts of deep neural networks. Then we have
+described the model architectures with emphasis on understandability by
+gradually introducing new building blocks of the detectors.
 
-Next, we have introduced the provided datasets. Unfortunately, since the datasets consist mainly of the company's customer products, only one dataset could be published. However, we provided illustrations and detailed characteristics. Based on the prior results, we have set the hypotheses about the performance of our models. Afterward, we have described the training process and its details. We have discussed the evaluation results dataset by dataset and eventually summed up the results at the end of Chapter 4.
+Next, we have introduced the provided datasets. Unfortunately, since the
+datasets consist mainly of the company's customer products, only one dataset
+could be published. However, we provided illustrations and detailed
+characteristics. Based on the prior results, we have set the hypotheses about
+the performance of our models. Afterward, we have described the training
+process and its details. We have discussed the evaluation results dataset by
+dataset and eventually summed up the results at the end of Chapter 4.
 
+For the purpose of future evaluations on different datasets, we have developed
+a simple benchmarking tool with a web GUI. We have created a Python API built
+upon the scripts we had used for our experiments. The tool provides an
+interactive way for training and evaluating arbitrary object detection dataset.
 
 \section{Future Work}
+We have intentionally chosen models that are well-established and had stable
+implementations. However, the field of deep learning advances rapidly and we
+would like to mention very recent models which we think deserve attention. The
+first model, called EfficientDet \cite{efficientdet}, was proposed last year by
+Google Research. They achieved better results than prior art while reducing the
+number of model parameters (weights) and the required computations. Although the
+model can be implemented with the standard backbones (e.g., ResNet
+\cite{resnet}), better efficiency and performance are achieved using their
+proposed backbone EfficientNet \cite{efficientnet}.
+
+The next model is a proposal by Facebook AI \cite{detr}. The model achieves similar
+performance as highly-optimized Faster R-CNN models on a COCO dataset. The main
+contribution of the proposal is the introduction of a new approach to the object
+detection task. The model removes hand-designed steps such as non-maximum
+suppression or anchor generation (recall Section \ref{rpn}) by incorporating a
+transformer encoder-decoder architecture \cite{transformer} that has been
+recently exploited in the area of Natural Language Processing (NLP)
+\cite{bert, gpt3}. The model is therefore called a DEtection TRansformer or
+simply DETR.
+
+Finally, the last model we would like to mention is the fourth iteration of the
+well-known YOLO model \cite{yolo1, yolo2, yolo3, yolo4} that achieves similar
+performance as EfficientDet while running twice as faster. According to the
+authors, the latest extension of YOLOv4 achieves the highest accuracy on the
+COCO dataset among any published work \cite{yolo4scaled}.
+
+\textit{Something about the benchmarking tool.}
