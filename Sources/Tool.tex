@@ -114,6 +114,12 @@ list is similar to the datasets list, with the exception that the user can
 choose multiple items from the list. The next step is to choose the values of
 the parameters of each model.
 
+\begin{figure}[ht]
+    \includegraphics[width=\linewidth]{Sources/Figures/eval_table_plot.png}
+    \caption{Evaluation step in benchmarking tool.}
+    \label{fig:evaluation-step}
+\end{figure}
+
 Finally, the last step recapitulates the chosen models and selected parameters.
 The user initiates the training by clicking on a "Start training" button. Since
 the training process can be long, the user should have feedback on the training
@@ -121,10 +127,19 @@ progress. We therefore display the console's output by polling the training logs
 from the backend. After the training finishes, the models are immediately
 evaluated. First, the table of AP metrics is shown. Each column can be sorted in
 both descending and ascending order by clicking on the metric's name. Next, we
-visualize the metrics in a stacked bar chart similarly as in Figure
-\todo{Obrazek} to simplify the interpretation. The last evaluation component of
+visualize the metrics in a stacked bar chart to highlight the differences in the
+values (see Figure \ref{fig:evaluation-step}). The last evaluation component of
 the benchmarking tool is the option to view the prediction results on a random
-test image for each trained model.
+test image for each trained model (see Figure \ref{fig:random-inference}). The
+user can choose between predictions of trained models and set the score
+threshold (predictions with the score above the threshold are counted as
+true positives).
+
+\begin{figure}[ht]
+    \includegraphics[width=\linewidth]{Sources/Figures/eval_random_image_.png}
+    \caption{Predictions on a random image in benchmarking tool.}
+    \label{fig:random-inference}
+\end{figure}
 
 As we mentioned in the beginning of this chapter, the backend is implemented in
 Python. Since the Detectron2 framework is based on Python, it was a natural
@@ -133,3 +148,22 @@ choice to preserve the technology. The HTTP API is implemented with
 endpoints based on standard Python type hints. That means the instances of some
 custom defined Python data models can be automatically validated and converted
 e.g. to JSON.
+
+\begin{lstlisting}[language=python, caption=Simplified FastAPI example]
+    from fastapi import FastAPI
+
+    app = FastAPI()
+
+    @app.get("/datasets")
+    def read_datasets():
+        return ["candies", "medical", "metal"]
+\end{lstlisting}
+\label{code:fastapi}
+
+See Listing \ref{code:fastapi} for a simplified FastAPI usage.
+Sending a GET request to the \texttt{/datasets} endpoint would return a JSON
+array \texttt{["candies", "medical", "metal"]}. We can define POST endpoints in
+similar manner. The main logic is implemented in the \texttt{Benchmark} class.
+The instance of the class preserves the application's state and handles most of
+the requests sent by the frontend.
+
