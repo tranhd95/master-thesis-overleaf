@@ -55,4 +55,24 @@ performance as EfficientDet while running twice as faster. According to the
 authors, the latest extension of YOLOv4 achieves the highest accuracy on the
 COCO dataset among any published work \cite{yolo4scaled}.
 
-\textit{Something about the benchmarking tool.}
+Our implementation of the benchmarking tool provides rather minimal
+functionalities, such as selecting datasets, models, and the training process.
+It can be seen as a functional proof-of-concept or a foundation application that
+can be further expanded. We list possible extensions below:
+\begin{itemize}
+    \item Accept more dataset formats such as COCO, VOC, or YOLO dataset format.
+    \item Add more models and their settings.
+    \item Add more options to change parameters.
+    \item Add more control during the training process. The current state does
+          not allow any interaction with the training process. It would be
+          plausible if the user could pause and resume the training process.
+    \item Related to the previous proposal; the user should have clear feedback
+          about the training process. The tool should include visualization of
+          the losses, e.g., by integrating Tensorboard\footnote{
+              Tensorboard is a visualization kit. See
+              \url{https://tensorboard.dev/}.
+          }.
+    \item For a long-term goal, it would make sense to separate the evaluation
+          component that would serve for evaluating models trained outside the
+          tool.
+\end{itemize}
