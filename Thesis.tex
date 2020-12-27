@@ -131,13 +131,15 @@
 % \include{Sources/Abstract}
 \tableofcontents
 \listoffigures
+\listoftables
+\glsaddall
+\printglossary[type=\acronymtype]
 \mainmatter
 
-\let\cleardoublepage\clearpage
-% \include{Sources/Introduction}
-% \include{Sources/Background}
-% \include{Sources/Models}
-% \include{Sources/Evaluation}
+\include{Sources/Introduction}
+\include{Sources/Background}
+\include{Sources/Models}
+\include{Sources/Evaluation}
 \include{Sources/Tool}
 \include{Sources/Conclusion}
 \include{Sources/Appendix}
@@ -146,11 +148,7 @@
 \bookmarksetup{startatroot}
 \backmatter
 
-\begingroup
-\let\clearpage\relax
-\glsaddall
-\printglossary[type=\acronymtype]
-\endgroup
+
 
 \printindex
 \begingroup

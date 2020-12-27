@@ -93,7 +93,6 @@
   nogroupskip,
   nopostdot,
   nonumberlist,
-  toc,
   ]{glossaries}
 
 % New style that prevents line-breaks between the full description and

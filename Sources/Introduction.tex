@@ -2,12 +2,49 @@
 \chapter{Introduction}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-In the era of Industry 4.0, companies exploit modern technology to optimize traditional manufacturing and industrial processes. As human labor is expensive, companies search for new ways to minimize human assistance. Eyesight is one of the senses that could not be replaced easily for a long time. However, with recent advances in the field of computer vision, some tasks can be done by robots that consist of camera systems that allow robots to perceive their surroundings.
+In the era of Industry 4.0, companies exploit modern technology to optimize
+traditional manufacturing and industrial processes. As human labor is expensive,
+companies search for new ways to minimize human assistance. Eyesight is one of
+the senses that could not be replaced easily for a long time. However, with
+recent advances in the field of \bld{computer vision}, some tasks can be done by
+robots. The robots usually consist of camera systems that allow robots to
+perceive their surroundings and make decisions.
 
-In 2015 scientists from Microsoft Research team proposed a \bld{deep learning} model that surpassed human-level accuracy on a visual recognition task on the ImageNet 2012 classification dataset \cite{surp2015}. Since then, even better models were proposed \cite{resnet, efficientnet}. These high-performing image recognition models became the basis of state-of-the-art \bld{object detection} models, which are the key component of machine perception.
+In 2015 scientists from Microsoft Research team proposed a \bld{deep learning}
+model \cite{surp2015} that surpassed human-level accuracy on a visual
+recognition task on the ImageNet 2012 classification dataset \cite{imagenet}.
+Since then, even superior models were proposed \cite{resnet, efficientnet}.
+These high-performing image recognition models became the basis of
+state-of-the-art \bld{object detection} models, which are the key component of
+machine perception as their task is to localize the objects in the scene.
 
-There are many areas where machine perception is useful in industry. For instance, the models can be trained to detect faulty products soon enough to take corrective actions to ensure the products' quality. It is also a vital part of robotic arms that can carry out non-trivial tasks such as picking, sorting, and packing items. Another example of use can be observed in autonomous delivery navigation robots that can pick up trays of objects and move them around in a larger area~\cite{bmw}.
+There are many areas where machine perception is useful in industry. For
+instance, the models can be trained to detect faulty products soon enough to
+take corrective actions to ensure the products' quality. It is also a vital part
+of robotic arms that can carry out non-trivial tasks such as picking, sorting,
+and packing of items. Another example of use can be observed in autonomous
+delivery navigation robots that can pick up trays of objects and move them
+around in a larger area such as a warehouse or a car factory \cite{bmw}.
 
-The thesis summarizes some of the state-of-the-art object detection methods based on deep learning approach. The models are evaluated on various datasets provided by collaborating company SANEZOO, which offers solutions to problems such as AI robot guidance and 3D vision inspection of products. Different models are compared using appropriate metrics for object detection tasks, and the results are shown in a summary table with additional comments. The work resulted in the implementation of a benchmarking tool for selected object detection methods, which can be used with an arbitrary annotated dataset
+The main goal of the thesis is \bld{to research} and \bld{to summarize} some of
+the state-of-the-art object detection methods based on deep learning approach.
+The models are evaluated on various real-world datasets provided by
+collaborating company SANEZOO EUROPE, which offers solutions to problems such
+as AI robot guidance and 3D vision inspection of products. Different models are
+compared using appropriate metrics for object detection tasks. The results are
+then summarized and discussed. For future evaluations on arbitrary datasets,
+\bld{we implement a benchmarking tool} that provides an interactive way to train
+and evaluate models.
 
-\todo{Dokoncit uvod}
+We start by introducing the object detection task and the evaluation metrics we
+use to measure the object detection models' performance. Next, we define the key
+components of deep learning models. After defining all relevant concepts, we
+begin to describe the models we have chosen for our evaluation. Chapter
+\ref{chap:evaluation} introduces the provided datasets, describes the expected
+results, training settings, and finally summarizes the evaluation outcomes. The
+next Chapter \ref{chap:tool} describes the use case, the design, and the
+implementation of our benchmarking tool. Lastly, we recapitulate our
+contributions and propose future work in the final Chapter
+\ref{chap:conclusion}. We use \bld{bold text} to highlight important parts of
+text such as newly introduced terms, important concepts or explanations.
+
