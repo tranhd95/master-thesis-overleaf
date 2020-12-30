@@ -23,6 +23,7 @@
     tabsize=2
 }
 \lstset{style=mystyle}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Some of my favourite personal adjustments
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -44,6 +45,7 @@
 \newcommand{\pd}[1]{\dfrac{\partial\loss}{\partial w_#1}}
 \newcommand{\pdj}{\dfrac{\partial\loss_j}{\partial w_i}}
 \newcommand{\prt}[2]{\dfrac{\partial #1}{\partial #2}}
+\newcommand{\myref}[2]{\hyperref[#2]{#1~\ref*{#2}}}
 \sisetup{%
   detect-all           = true,
   detect-family        = true,
@@ -63,7 +65,7 @@
 \usepackage[%
   colorlinks = true,
   citecolor  = Green,
-  linkcolor  = RoyalBlue,
+  linkcolor  = Mahogany,
   urlcolor   = RoyalBlue,
   unicode,
   ]{hyperref}
@@ -140,9 +142,9 @@
 % \include{Sources/Background}
 % \include{Sources/Models}
 \include{Sources/Evaluation}
-% \include{Sources/Tool}
+\include{Sources/Tool}
 % \include{Sources/Conclusion}
-% \include{Sources/Appendix}
+\include{Sources/Appendix}
 % This ensures that the subsequent sections are being included as root
 % items in the bookmark structure of your PDF reader.
 \bookmarksetup{startatroot}

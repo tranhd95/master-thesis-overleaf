@@ -30,7 +30,7 @@ the typical scenario of the user interactions with the application below:
 \end{enumerate}
 As we can see, the process can be split into a sequence of steps. Therefore, in
 terms of the GUI design, we took inspiration from the layout of setup wizards
-(see Figure \ref{fig:wizard}). At each step, only relevant information is
+(see \myref{Figure}{fig:wizard}). At each step, only relevant information is
 visible. The user can only go to the previous or next step (if the user provides
 all the necessary information).
 
@@ -48,7 +48,7 @@ endpoints. The API will consist mainly GET and POST requests. For example, if we
 would like to retrieve a list of datasets, we would send a GET request to a URI
 of the form similar to \texttt{<api\_address>/datasets}. The POST requests will
 be mainly used for setting up the training details and initiating the training
-process. See Figure \ref{fig:tool_design} for an illustration of the communication.
+process. See \myref{Figure}{fig:tool_design} for an illustration of the communication.
 
 \begin{figure}[h]
     \centering
@@ -64,8 +64,8 @@ components that can communicate with each other and share the state. The
 structure of the code is therefore more readable as it is written in a
 semantical hierarchy of components. Each component is defined by its HTML
 template that can be extended with JavaScript codes and Vue-specific special
-constructs (such as \texttt{v-for} that can render elements of collections). For
-demonstration see Listing \ref{code:vue}. The \texttt{v-for} is added to the
+constructs (such as \texttt{v-for} that can render elements of collections). See
+demonstration in \myref{Listing}{code:vue}. The \texttt{v-for} is added to the
 \texttt{<li>} element and renders it for each item in \texttt{items} JavaScript
 array. The \texttt{\{\{ item.message \}\}} is used for text interpolation that
 renders the JavaScript value as a HTML text.
@@ -88,7 +88,7 @@ previous section. The component progresses vertically from top to bottom. The
 current progress is visible on the left side of the component. Similar to the
 setup wizards, the user can only move one step back or one step forward in each
 step by clicking on the buttons in the bottom left corner of each step's body.
-The implementation can be seen in Figure \ref{fig:datasets_selection}.
+The implementation can be seen in \myref{Figure}{fig:datasets_selection}.
 
 \begin{figure}[h]
     \centering
@@ -105,7 +105,7 @@ uploaded. The datasets that are detected but are of the wrong format or miss
 some necessary details can not be chosen. Besides that, an appropriate warning
 is shown to the user. All available datasets are shown in a list with additional
 information such as the size of the dataset or the number of classes it consists
-of (see Figure \ref{fig:datasets_selection}). By clicking on one of the list's
+of (see \myref{Figure}{fig:datasets_selection}). By clicking on one of the list's
 item, a corresponding dataset is chosen. If a file containing all the
 annotations is present in the selected dataset's folder, the user can also
 choose a split ratio by which the dataset is automatically divided. After
@@ -128,9 +128,9 @@ from the backend. After the training finishes, the models are immediately
 evaluated. First, the table of AP metrics is shown. Each column can be sorted in
 both descending and ascending order by clicking on the metric's name. Next, we
 visualize the metrics in a stacked bar chart to highlight the differences in the
-values (see Figure \ref{fig:evaluation-step}). The last evaluation component of
+values (see \myref{Figure}{fig:evaluation-step}). The last evaluation component of
 the benchmarking tool is the option to view the prediction results on a random
-test image for each trained model (see Figure \ref{fig:random-inference}). The
+test image for each trained model (see \myref{Figure}{fig:random-inference}). The
 user can choose between predictions of trained models and set the score
 threshold (predictions with the score above the threshold are counted as
 true positives).
@@ -141,6 +141,11 @@ true positives).
     \label{fig:random-inference}
 \end{figure}
 
+The trained weights can be downloaded in the PyTorch \texttt{.pth} format. The
+format is based on Python's object serialization module \texttt{pickle}. The
+module is used for converting Python object hierarchies to byte stream that can
+be later deserialized or "unpickled".
+
 As we mentioned in the beginning of this chapter, the backend is implemented in
 Python. Since the Detectron2 framework is based on Python, it was a natural
 choice to preserve the technology. The HTTP API is implemented with
@@ -148,7 +153,7 @@ choice to preserve the technology. The HTTP API is implemented with
 endpoints based on standard Python type hints. That means the instances of some
 custom defined Python data models can be automatically validated and converted
 e.g. to JSON.
-
+\newpage
 \begin{lstlisting}[language=python, caption=Simplified FastAPI example]
     from fastapi import FastAPI
 
@@ -160,7 +165,7 @@ e.g. to JSON.
 \end{lstlisting}
 \label{code:fastapi}
 
-See Listing \ref{code:fastapi} for a simplified FastAPI usage.
+See \myref{Listing}{code:fastapi} for a simplified FastAPI usage.
 Sending a GET request to the \texttt{/datasets} endpoint would return a JSON
 array \texttt{["candies", "medical", "metal"]}. We can define POST endpoints in
 similar manner. The main logic is implemented in the \texttt{Benchmark} class.

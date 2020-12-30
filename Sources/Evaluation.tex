@@ -10,7 +10,7 @@ We are provided with three datasets by the company SANEZOO EUROPE.
 Unfortunately, two of the datasets cannot be published as they are protected
 under a confidentiality agreement. However, we provide sufficient
 characteristics of the datasets. We summarize the basic information of the
-datasets in Table \ref{tab:datasets}. Detailed description is provided below
+datasets in \myref{Table}{tab:datasets}. Detailed description is provided below
 the table.
 
 \begin{table}[h]
@@ -48,9 +48,9 @@ the table.
 
 \subsection*{Candies dataset}
 Only the first dataset is publishable; thus, we provide a
-visual example image in Figure \ref{fig:candies}. The images consist only of a
+visual example image in \myref{Figure}{fig:candies}. The images consist only of a
 single class -- a golden candy. The density of objects (how densely they cover
-the image) varies through the dataset (see Figure \ref{fig:candies}). Object
+the image) varies through the dataset (see \myref{Figure}{fig:candies}). Object
 occlusions can occur in dense images; therefore, the dataset is not trivial.
 However, compared to our other datasets, it is still a simpler dataset as it
 strictly contains only a single class without foreign objects. Therefore, we
@@ -58,10 +58,10 @@ assign an easy difficulty to this dataset.
 
 \subsection*{Metal parts dataset}
 The second dataset consists of images with small
-metal parts (such as shafts, rings, casings). See Figure \ref{fig:parts} for
+metal parts (such as shafts, rings, casings). See \myref{Figure}{fig:parts} for
 rough illustration. The objects are placed in a plastic bin. There is always
 only one class of objects on a single image. The images are taken from a
-top-down perspective, similarly as in Figure \ref{fig:candies}. However, they
+top-down perspective, similarly as in \myref{Figure}{fig:candies}. However, they
 are taken from various angles. The density of objects also differ through the
 dataset as in the first dataset (you can imagine a pile of metal parts).
 
@@ -177,7 +177,7 @@ probability. We train every model with SGD with momentum and weight decay
 ($\mathcal{L}_2$ regularization). The learning rate is by default scheduled with
 \texttt{WarmupMultiStepLR} that simply starts with a low learning rate and
 increases to a defined base learning rate. We summarize the different parameters
-for each model and datasets in the Table \ref{tab:parameters}.
+for each model and datasets in the \myref{Table}{tab:parameters}.
 
 \begin{table}[h]
 	\centering
@@ -234,8 +234,8 @@ observations.
 \end{figure}
 
 \subsection*{Candies dataset}
-The resulting AP metrics for the candies dataset can be seen in Table
-\ref{tab:candies}. We can see that the AP is indeed higher than for the COCO
+The resulting AP metrics for the candies dataset can be seen in
+\myref{Table}{tab:candies}. We can see that the AP is indeed higher than for the COCO
 dataset (44.3 for Cascade R-CNN \cite{detectron}). Another observation we make
 is that the main APs (AP, AP$_{50}$, AP$_{75}$) do not differ that much. And
 in fact, they \bld{do not match with our hypothesis (b)} as the Cascade R-CNN is
@@ -243,7 +243,7 @@ the worst model. We strongly believe that this is caused by \bld{extremely small
 	dataset size}. The test set consists only of 22 images. The random sample of
 test images can thus greatly affect the resulting AP as the small sample may not
 cover most of the cases of the images. Moreover the small training size also
-\bld{causes overfitting} as we can see in the Figure \ref{fig:candies_loss}.
+\bld{causes overfitting} as we can see in the \myref{Figure}{fig:candies_loss}.
 
 \begin{table}[H]
 	\centering
@@ -261,13 +261,15 @@ cover most of the cases of the images. Moreover the small training size also
 
 Nevertheless, we can see that training a small dataset on our datasets can
 produce relatively sufficient performance that can be used for additional
-annotation of the datasets by using the models' predictions. The Figure
-\ref{fig:candies_hard} shows an hard example of dense image with two false
+annotation of the datasets by using the models' predictions. The
+\myref{Figure}{fig:candies_hard} shows an hard example of dense image with two false
 positive predictions by RetinaNet model. In the top left corner of the image,
 the model falsely detected a candy between two correctly detected candies. The
 second false prediction is more interesting. The model predicted a candy out of
 an area that actually looks like a candy to human eyes. But in fact, it is
-the ends of two candy packagings that form the illusion.
+the ends of two candy packagings that form the illusion. We show more
+predictions examples in Figures \ref{fig:candies_appendix1},
+\ref{fig:candies_appendix2} in the \hyperref[appendix]{Appendix}.
 
 \begin{figure}[H]
 
@@ -290,8 +292,8 @@ the ends of two candy packagings that form the illusion.
 	\label{fig:candies_hard}
 \end{figure}
 
-The measured average inference times of each model is listed below in Table
-\ref{tab:candies_time}. It was evaluated on Google Colab with NVIDIA Tesla T4
+The measured average inference times of each model is listed below in
+\myref{Table}{tab:candies_time}. It was evaluated on Google Colab with NVIDIA Tesla T4
 GPU and Intel Xeon CPU 2.20GHz. Each image had 300$\times$400px resolution. We
 can see that RetinaNet is indeed the fastest of all models and all models meet
 our hypothesis (d).
@@ -327,9 +329,9 @@ our hypothesis (d).
 
 \subsection*{Metal parts dataset}
 Since there are more classes in metal parts dataset, we visualize the metrics
-as a heatmap in the Figure \ref{fig:metal_ap}. The loss curves are shown in
-the Figure \ref{fig:metal_loss}. The results for this dataset correspond more to
-the assumptions we have made in Section \ref{sec:hypotheses}. We believe this is
+as a heatmap in the \myref{Figure}{fig:metal_ap}. The loss curves are shown in
+the \myref{Figure}{fig:metal_loss}. The results for this dataset correspond more to
+the assumptions we have made in \myref{Section}{sec:hypotheses}. We believe this is
 because of the larger size of the dataset. We can see that there is a
 significant difference between the worst model Faster R-CNN and the best
 performing model Cascade R-CNN (\small$\sim$\normalsize12 AP difference). The
@@ -348,7 +350,7 @@ a bigger size.
 
 The hardest images for prediction were those with the class 4. The objects of
 class 4 are relatively small. On top of that, they are very densely arranged in
-the image (see Figure \ref{fig:metal_example} for illustration).
+the image (see \myref{Section}{fig:metal_example} for illustration).
 
 \begin{figure}[H]
 	\centering
@@ -360,8 +362,7 @@ the image (see Figure \ref{fig:metal_example} for illustration).
 
 The measured inference times were greater than on candies dataset because of
 larger image size (960$\times$800px). Evaluation was performed on the same
-hardware specifications. The results are dipslayed in the Table
-\ref{tab:metal_time}.
+hardware specifications. The results are dipslayed in the \myref{Table}{tab:metal_time}.
 
 \begin{table}[H]
 	\centering
@@ -380,7 +381,7 @@ hardware specifications. The results are dipslayed in the Table
 \end{table}
 
 \subsection*{Medical supplies dataset}
-The resulting metrics visualized in the Figure \ref{fig:medical_ap} suggest that
+The resulting metrics visualized in the \myref{Figure}{fig:medical_ap} suggest that
 we have overestimated the dataset's difficulty as we have achieved AP higher
 than 80 for every model. Cascade R-CNN is indeed the best model but the
 differences are not that big as in previous dataset. We suspect that the reason
@@ -400,12 +401,12 @@ problem. Most of the medium objects were the bandages.
 	\label{fig:medical_ap}
 \end{figure}
 
-Despite the exceptional results, the loss curves in Figure
-\ref{fig:medical_loss} suggest an overfitting problem. We again believe that
+Despite the exceptional results, the loss curves in
+\myref{Figure}{fig:medical_loss} suggest an overfitting problem. We again believe that
 the main reason of the issue is a relatively small dataset size. The medical
 supplies dataset had the largest images by resolution (2464$\times$820px).
-Therefore, the inference times were also the highest (see Table
-\ref{tab:medical_times}); however, still achieve at least 2 FPS.
+Therefore, the inference times were also the highest (see
+\myref{Table}{tab:medical_times}); however, still achieve at least 2 FPS.
 
 \begin{table}[H]
 	\centering
