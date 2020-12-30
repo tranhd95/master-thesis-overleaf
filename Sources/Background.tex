@@ -7,8 +7,8 @@ understanding of our chosen object detection models.
 
 \section{Object Detection}
 Object detection aims to locate objects in a given image and assign them to
-their \bld{class} (also called category or label). For illustration see Figure
-\ref{fig:od}. Generally, the task can be broken down into three steps:
+their \bld{class} (also called category or label). For illustration see
+\myref{Figure}{fig:od}. Generally, the task can be broken down into three steps:
 \bld{informative region selection}, \bld{feature extraction}, and
 \bld{classification}. In the first step, the method has to determine regions to
 which we apply the feature extraction. The feature extractor outputs a semantic
@@ -34,8 +34,8 @@ that the model only takes a given set of annotated images to learn to detect key
 features, localize the objects, and classify them. So the hard work is done
 mainly by the model itself. This approach outperforms the traditional pipelines
 by a significant margin with respect to illumination and viewpoint changes
-\cite{outperforming}. We describe deep learning in detail in the Section
-\ref{deep_learning_chapter}. But firstly, let us describe how to measure the
+\cite{outperforming}. We describe deep learning in detail in the
+\myref{Section}{deep_learning_chapter}. But firstly, let us describe how to measure the
 performance of object detectors.
 
 \subsection{Evaluation Metrics}
@@ -82,7 +82,7 @@ coordinates (the boundaries of the detected object), \bld{predicted class}, and
 correct, we need to define \bld{Intersubsection-over-Union (IoU)}. IoU is
 defined as a proportion of the area of intersubsection (overlap between
 predicted bounding box and the ground-truth bounding box) and the area of union
-(see Figure \ref{fig:iou}):
+(see \myref{Figure}{fig:iou}):
 $$
     \text{IoU} = \frac{\text{area of intersubsection}}{\text{area of union}}.
 $$
@@ -97,10 +97,11 @@ illustration, consider a simplified example: we collect all predictions for the
 class $c$ from all test images, and we rank them by the confidence score. Let
 \bld{positive predictions} be those predictions that have IoU > 0.5. If there
 are more positive predictions for a single object, only the prediction with a
-higher confidence score is considered to be a TP. See the example Table
-\ref{tab:ap}. In the definition of AP, precision is defined as the proportion of
-all predictions above the rank which are TP. Whereas recall is defined as the
-proportion of TP ranked above a given rank and all positive predictions.
+higher confidence score is considered to be a TP. See the example
+\myref{Table}{tab:ap}. In the definition of AP, precision is defined as the
+proportion of all predictions above the rank which are TP. Whereas recall is
+defined as the proportion of TP ranked above a given rank and all positive
+predictions.
 \begin{table}[H]
     \centering
     \begin{threeparttable}
@@ -133,7 +134,7 @@ row (including the row). The recall is $2/5 = 0.4$, since there are 2 TP out of
 pattern as we go down the ranking. Whereas the recall is increasing.
 
 The AP$_c$ is defined as an \bld{area under the precision-recall curve} (see
-Figure \ref{fig:precisionrecall}). To reduce the impact of the zigzags, we
+\myref{Figure}{fig:precisionrecall}). To reduce the impact of the zigzags, we
 interpolate the curve at each recall value $r$ by taking the maximum precision
 $p_\text{interp}$ measured "to the right":
 $$
@@ -141,8 +142,7 @@ $$
 $$
 where $p(\hat{r})$ is the measured precision at the measured recall $\hat{r}$.
 We obtain a monotonically decreasing curve that can be numerically integrated as
-it is a piecewise constant (see the red dashed curve in Figure
-\ref{fig:precisionrecall}). We sample all unique recall values $R$ and compute
+it is a piecewise constant (see the red dashed curve in \myref{Figure}{fig:precisionrecall}). We sample all unique recall values $R$ and compute
 AP$_c$ as a sum of rectangular blocks as follows:
 $$
     \text{AP}_c = \sum\limits^{\lvert R\rvert - 1}_{n = 0} (r_{n+1} - r_n)
@@ -209,7 +209,7 @@ $y$ is the \bld{output}, $x$ is the \bld{input}, and $\theta$ are the network's
 output the list of objects with their respective coordinates and classes based
 on the input image. The process of finding the best weights $\theta$ for
 accurate approximation is called \bld{training} (or the network \bld{learns}).
-We describe this process in detail in Section \ref{sec:training}.
+We describe this process in detail in \myref{Section}{sec:training}.
 
 The network $f^*$ is composed of intermediate computations that are defined by
 some function $f^{(i)}$. We might write the approximated function as a function
@@ -236,12 +236,12 @@ $y$ of size $n$. The transformation has two parameters, a
 \bld{weight matrix} $W$ of size $m \times n$ and \bld{bias}
 $\boldsymbol{b}$ of size $n$. Firstly, the input vector is weighted by $W$, then
 the bias is added, and finally an \bld{activation function} $\phi$
-is applied to every element (see Section \ref{afunctions} for more details on
+is applied to every element (see \myref{Section}{afunctions} for more details on
 activation functions).
 $$
     y = \phi(W\cdot x + b)
 $$
-See figure \ref{fig:fcl} for a graph representation of a neural network composed
+See \myref{Figure}{fig:fcl} for a graph representation of a neural network composed
 of two fully-connected layers, where each node is a neuron, and each directed
 edge is a weight.
 
@@ -516,7 +516,7 @@ $\Delta\theta_{t}$. This extension also helps to escape local minima. Finally,
     not able to gain sufficiently low training loss. Underfitting can happen because
     of using a weak model or not training long enough. If we plot the losses, we
     want to make sure that the training loss is reasonably low, and the gap between
-    training and test error is small (see figure \ref{fig:loss_plot}).
+    training and test error is small (see \myref{Figure}{fig:loss_plot}).
 
     \begin{figure}[h]
         \centering
