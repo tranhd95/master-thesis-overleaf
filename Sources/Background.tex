@@ -6,14 +6,15 @@ detection task. We then describe the fundamentals of deep learning for a better
 understanding of our chosen object detection models.
 
 \section{Object Detection}
-Object detection aims to locate objects in a given image and assign them to
-their \bld{class} (also called category or label). For illustration see
-\myref{Figure}{fig:od}. Generally, the task can be broken down into three steps:
-\bld{informative region selection}, \bld{feature extraction}, and
-\bld{classification}. In the first step, the method has to determine regions to
-which we apply the feature extraction. The feature extractor outputs a semantic
-numerical representation for each selected region is then used to predict the
-target's class. Note that, these steps are not fixed and the pipeline can vary.
+Object detection aims to locate objects in a given image. We assign a
+\bld{class} (also called \bld{category} or \bld{label}) to each detected object.
+For illustration see \myref{Figure}{fig:od}. Generally, the task can be broken
+down into three steps: \bld{informative region selection},
+\bld{feature extraction}, and \bld{classification}. In the first step, the
+method has to determine regions to which we apply the feature extraction. The
+feature extractor outputs a semantic numerical representation for each selected
+region is then used to predict the target's class. Note that, these steps are
+not fixed and the pipeline can vary.
 
 \begin{figure}[h]
     \centering
@@ -25,9 +26,9 @@ target's class. Note that, these steps are not fixed and the pipeline can vary.
 
 Traditionally, engineers had to hand-craft feature extractors using algorithms
 such as SIFT \cite{sift}, SURF \cite{surf}, or HOG \cite{hog}. These methods are
-combined with well-established classification algorithms such as Support Vector
-Machines (SVM) \cite{svm}. Since this approach needs manual designing, it can be
-very demanding.
+then combined with well-established classification algorithms such as support
+vector machines (SVM) \cite{svm}. Since this approach needs manual designing, it
+can be very demanding.
 
 Deep learning methods introduced an end-to-end learning approach, which means
 that the model only takes a given set of annotated images to learn to detect key
@@ -39,8 +40,8 @@ by a significant margin with respect to illumination and viewpoint changes
 performance of object detectors.
 
 \subsection{Evaluation Metrics}
-Firstly, let us define evaluation metrics for binary classification. Consider
-two classes we want to predict: \bld{positive (P)} and \bld{negative (N)}. Let
+Firstly, let us define evaluation metrics for binary classification. Consider we
+want to predict two classes: \bld{positive (P)} and \bld{negative (N)}. Let
 \begin{itemize}
     \item \bld{true positives (TP)} be correctly predicted P cases,
     \item \bld{true negatives (TN)} be correctly predicted N cases,
@@ -53,13 +54,13 @@ $$
     \text{precision} = \frac{\text{TP}}{\text{TP} + \text{FP}}, \\
     \text{recall} = \frac{\text{TP}}{\text{TP} + \text{FN}}.
 $$
-Precision is also known as a positive predictive value, i.e., how many of the
-positive predictions (TP + FP) actually belong to P class. Recall is known as a
-true positive rate and it measures how many TP we have predicted out of all
-actual P cases (TP + FN). There is a trade-off relationship between these
-metrics. If we increase the precision (e.g., by setting more strict constraints
-for assigning TP to a prediction), the recall decreases as there would be more
-FN cases, and vice versa.
+Precision is also known as a \bld{positive predictive value}, i.e., how many of
+the positive predictions (TP + FP) actually belong to P class. Recall is known
+as a \bld{true positive rate} and it measures how many TP we have predicted out
+of all actual P cases (TP + FN). There is a \bld{trade-off relationship} between
+these metrics. If we increase the precision (e.g., by setting more strict
+constraints for assigning TP to a prediction), the recall decreases as there
+would be more FN cases, and vice versa.
 
 For an object detection model evaluation, we can suppose that TP represents
 correctly detected object. Similarly, FP can be viewed as a wrongly detected
@@ -79,12 +80,12 @@ TP and FP from the model's predictions.
 Models output a list of predictions that are defined by \bld{bounding box}
 coordinates (the boundaries of the detected object), \bld{predicted class}, and
 \bld{confidence score} of the prediction. To determine if the detection is
-correct, we need to define \bld{Intersubsection-over-Union (IoU)}. IoU is
-defined as a proportion of the area of intersubsection (overlap between
+correct, we need to define \bld{Intersection-over-Union (IoU)}. IoU is
+defined as a proportion of the area of intersection (overlap between
 predicted bounding box and the ground-truth bounding box) and the area of union
 (see \myref{Figure}{fig:iou}):
 $$
-    \text{IoU} = \frac{\text{area of intersubsection}}{\text{area of union}}.
+    \text{IoU} = \frac{\text{area of intersection}}{\text{area of union}}.
 $$
 We simply declare the prediction as a TP if the IoU of the ground-truth bounding
 box and the predicted bounding box is greater than a fixed IoU threshold.
@@ -128,9 +129,9 @@ predictions.
 \end{table}
 
 Let us explain the calculation behind the third row. The precision is
-$2/3 \doteq 0.67$, because there are 2 TP out of 3 predictions above the third
-row (including the row). The recall is $2/5 = 0.4$, since there are 2 TP out of
-5 positive predictions (IoU > 0.5). As we can see, the precision has a "zigzag"
+$2/3 \doteq 0.67$, because there are two TP out of three predictions above the third
+row (included). The recall is $2/5 = 0.4$, since there are two TP out of
+five positive predictions (IoU > 0.5). As we can see, the precision has a "zigzag"
 pattern as we go down the ranking. Whereas the recall is increasing.
 
 The AP$_c$ is defined as an \bld{area under the precision-recall curve} (see
@@ -197,7 +198,7 @@ unsupervised pre-training of deep feedforward neural networks
 dataset \cite{hinton2006fast, mnist}. This exceptional result drew attention
 to deep neural networks. The detailed historical development of artificial
 neural networks and deep learning is nicely overviewed in a journal article by
-another important figure in the field Juergen Schmidhuber
+another important figure in the field -- Juergen Schmidhuber
 \cite{DBLP:journals/corr/Schmidhuber14}.
 
 \subsection{Deep Feedforward Network}
@@ -208,8 +209,9 @@ $y$ is the \bld{output}, $x$ is the \bld{input}, and $\theta$ are the network's
 \bld{weights} (or parameters). For example, in our case, we would like to
 output the list of objects with their respective coordinates and classes based
 on the input image. The process of finding the best weights $\theta$ for
-accurate approximation is called \bld{training} (or the network \bld{learns}).
-We describe this process in detail in \myref{Section}{sec:training}.
+accurate approximation is called \bld{training} (or we also say that the network
+\bld{learns}). We describe this process in detail in
+\myref{Section}{sec:training}.
 
 The network $f^*$ is composed of intermediate computations that are defined by
 some function $f^{(i)}$. We might write the approximated function as a function
@@ -224,9 +226,10 @@ network is deep; hence, the name \bld{deep learning}. In the next sections, we
 describe different types of layers.
 
 \subsection{Convolutional Neural Network}
-In the following subsections we describe the layers of \bld{convolutional neural
-    networks (CNNs} that are a special case of a feedforward networks. They thrive at
-image processing tasks because of very effective feature extraction.
+The most common type of ANN used for image processing is a convolutional neural
+network (CNN). CNNs thrive at feature extraction, which is one of the most
+important part of image processing models. In the following sections we describe
+the most common layers that make up the CNN.
 
 \subsubsection{Fully-connected Layer}
 The most basic layer is \bld{fully-connected layer} (also known as
@@ -322,9 +325,8 @@ The image is downscaled to size $(I_w - K_w + 1) \times (I_h - K_h + 1$).
     values from a pooling region and outputs a single pixel. The most common type of
     a~ pooling operation is \textbf{max pooling}, which outputs the region's
     maximum value. Another operation that can be applied to the region is
-    \textbf{average pooling}, which outputs the region's mean value.
-
-    The pooling region's shape is typically 2 $\times$ 2. In some cases, we want to
+    \textbf{average pooling}, which outputs the region's mean value. The pooling
+    region's shape is typically 2 $\times$ 2. In some cases, we want to
     pool from the whole input. We call these operations \textbf{global poolings}
     (e.g., global max pooling).
 
@@ -356,7 +358,7 @@ The image is downscaled to size $(I_w - K_w + 1) \times (I_h - K_h + 1$).
 
     \subsection{Training}
     \label{sec:training}
-    We find the best weights by minimizing the loss function $\mathcal{L(\theta)}$
+    We find the best weights by minimizing the \bld{loss function} $\mathcal{L(\theta)}$
     that determines the quality of the model with parameters $\theta$. There are
     many different loss functions. However, we only describe the most common ones
     for classification and regression tasks.
@@ -367,7 +369,7 @@ The image is downscaled to size $(I_w - K_w + 1) \times (I_h - K_h + 1$).
     function. It is an average of squared errors. Error is defined as a difference
     (or distance) between predicted and actual value. Consider a \bld{dataset} of $n$
     examples $\mathcal{D} = \{(x_i, a_i)\mid i = 1,...,n\}$ where $x_i$ is the \bld{input}
-    and $a_i$ is the \bld{actual} value. Let $y_i = f^*(x_i; \theta)$ be the \bld{predicted
+    and $a_i$ is the \bld{actual value}. Let $y_i = f^*(x_i; \theta)$ be the \bld{predicted
         output} of the model based on the input $x_i$ parametrized by the model's weights
 $\theta$. We can then define MSE of dataset $\mathcal{D}$ as follows:
     $$
