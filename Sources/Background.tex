@@ -2,7 +2,7 @@
 \chapter{Background}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 In this chapter, we first outline the aims and approaches of solving the object
-detection task. We then describe the fundamentals of deep learning for a better
+detection task. We then describe the fundamentals of deep learning for better
 understanding of our chosen object detection models.
 
 \section{Object Detection}
@@ -13,7 +13,7 @@ down into three steps: \bld{informative region selection},
 \bld{feature extraction}, and \bld{classification}. In the first step, the
 method has to determine regions to which we apply the feature extraction. The
 feature extractor outputs a semantic numerical representation for each selected
-region is then used to predict the target's class. Note that, these steps are
+region is then used to predict the target's class. Note that these steps are
 not fixed and the pipeline can vary.
 
 \begin{figure}[h]
@@ -25,7 +25,7 @@ not fixed and the pipeline can vary.
 \end{figure}
 
 Traditionally, engineers had to hand-craft feature extractors using algorithms
-such as SIFT \cite{sift}, SURF \cite{surf}, or HOG \cite{hog}. These methods are
+such as SIFT \cite{sift}, SURF \cite{surf}, or HOG \cite{hog}. These methods were
 then combined with well-established classification algorithms such as support
 vector machines (SVM) \cite{svm}. Since this approach needs manual designing, it
 can be very demanding.
@@ -81,7 +81,7 @@ Models output a list of predictions that are defined by \bld{bounding box}
 coordinates (the boundaries of the detected object), \bld{predicted class}, and
 \bld{confidence score} of the prediction. To determine if the detection is
 correct, we need to define \bld{Intersection-over-Union (IoU)}. IoU is
-defined as a proportion of the area of intersection (overlap between
+defined as a proportion of the area of intersection (overlap between the
 predicted bounding box and the ground-truth bounding box) and the area of union
 (see \myref{Figure}{fig:iou}):
 $$
@@ -275,269 +275,269 @@ We denote $K(k, l)$ as the $k,j$-th element of the matrix. The output of the lay
 is a downscaled image $Y(i,j)$ that is often referred to as the \bld{feature map}.
 The image is downscaled to size $(I_w - K_w + 1) \times (I_h - K_h + 1$).
     The value of the $i, j$-th output neuron $Y(i,j)$ is defined by:
-    $$
-        Y(i, j) = \phi\left((I * K)(i,j) + b\right)
-    $$
+$$
+    Y(i, j) = \phi\left((I * K)(i,j) + b\right)
+$$
 
-    where $\phi$ is an \bld{activation function} and the $*$ operation is called \bld{convolution}
-    that is defined as follows:\footnote{The definition is in fact the cross-correlation formula.
-        However, the methods are interchangeable in the context of CNNs.}
+where $\phi$ is an \bld{activation function} and the $*$ operation is called \bld{convolution}
+that is defined as follows:\footnote{The definition is in fact the cross-correlation formula.
+    However, the methods are interchangeable in the context of CNNs.}
 
-    $$
-        (I * K)(x, y) = \sum\limits_{k = 1}^{K_w}\sum\limits_{l = 1}^{K_h}
-        I(x + k, y + l) \cdot K(k, l)
-    $$
+$$
+    (I * K)(x, y) = \sum\limits_{k = 1}^{K_w}\sum\limits_{l = 1}^{K_h}
+    I(x + k, y + l) \cdot K(k, l)
+$$
 
-    This process is applied to the whole input image (see figure
-    \ref{fig:convolution}). The convenience of this method comes with using the same
-    weights $K$ for each convolution operation. The weights $K$ (and also bias $b$)
-    are called \textbf{kernel} or \textbf{filter}. The kernel is trained to detect
-    some non-linear pattern. Therefore, we use multiple kernels to recognize
-    various features in the image (we end up with multiple feature maps). The
-    approach also helps CNNs to adapt to image \textbf{translation invariance},
-    i.e., the detected features do not depend on their positions in the input
-    image.
+This process is applied to the whole input image (see figure
+\ref{fig:convolution}). The convenience of this method comes with using the same
+weights $K$ for each convolution operation. The weights $K$ (and also bias $b$)
+are called \textbf{kernel} or \textbf{filter}. The kernel is trained to detect
+some non-linear pattern. Therefore, we use multiple kernels to recognize
+various features in the image (we end up with multiple feature maps). The
+approach also helps CNNs to adapt to image \textbf{translation invariance},
+i.e., the detected features do not depend on their positions in the input
+image.
 
-    For illustration purposes, we have considered a two-dimensional inputs. However,
-    in practice, we often work with RGB or even RGB-D images represented by
-    \textbf{tensors} of shape $(W, H, C)$, where $C$ is the number of channels (e.g.
-    three for classic RGB image).
+For illustration purposes, we have considered a two-dimensional inputs. However,
+in practice, we often work with RGB or even RGB-D images represented by
+\textbf{tensors} of shape $(W, H, C)$, where $C$ is the number of channels (e.g.
+three for classic RGB image).
 
-    Another important parameter of the layer is \textbf{stride length}. It defines
-    the number of pixels the filters shifts over the input image. The bigger is
-    stride length the more downscaled the output image is.
+Another important parameter of the layer is \textbf{stride length}. It defines
+the number of pixels the filters shifts over the input image. The bigger is
+stride length the more downscaled the output image is.
 
-    \begin{figure}[h]
-        \centering
-        \includegraphics[width=10cm]{Sources/Figures/convolution.png}
-        \caption{Illustration of a convolution layer with 5 $\times$ 5 kernel. Taken
-            from \cite{nielsenneural}.}
-        \label{fig:convolution}
-    \end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=10cm]{Sources/Figures/convolution.png}
+    \caption{Illustration of a convolution layer with 5 $\times$ 5 kernel. Taken
+        from \cite{nielsenneural}.}
+    \label{fig:convolution}
+\end{figure}
 
-    \subsubsection{Pooling Layer}
-    Another essential layer for CNNs is the \textbf{pooling layer}. In CNN
-    architectures, the pooling layers typically come after the convolution layers.
-    They are used for downscaling the feature maps to reduce the number of network
-    parameters.
+\subsubsection{Pooling Layer}
+Another essential layer for CNNs is the \textbf{pooling layer}. In CNN
+architectures, the pooling layers typically come after the convolution layers.
+They are used for downscaling the feature maps to reduce the number of network
+parameters.
 
-    The layer works in a similar manner to the convolution layer. It takes multiple
-    values from a pooling region and outputs a single pixel. The most common type of
-    a~ pooling operation is \textbf{max pooling}, which outputs the region's
-    maximum value. Another operation that can be applied to the region is
-    \textbf{average pooling}, which outputs the region's mean value. The pooling
-    region's shape is typically 2 $\times$ 2. In some cases, we want to
-    pool from the whole input. We call these operations \textbf{global poolings}
-    (e.g., global max pooling).
+The layer works in a similar manner to the convolution layer. It takes multiple
+values from a pooling region and outputs a single pixel. The most common type of
+a~ pooling operation is \textbf{max pooling}, which outputs the region's
+maximum value. Another operation that can be applied to the region is
+\textbf{average pooling}, which outputs the region's mean value. The pooling
+region's shape is typically 2 $\times$ 2. In some cases, we want to
+pool from the whole input. We call these operations \textbf{global poolings}
+(e.g., global max pooling).
 
-    \subsubsection{Activation Functions}
-    \label{afunctions}
+\subsubsection{Activation Functions}
+\label{afunctions}
 
-    Activation functions introduce non-linearity to the layers. Some of the most
-    important ones are listed below:
-    \begin{itemize}
-        \item \textbf{ReLU} (rectified linear unit) is the most popular activation
-              function, which was introduced in \cite{pmlr-v15-glorot11a}. It is defined
-              as follows: $\text{ReLU}(x) = \max(0, x)$. It deals better with vanishing
-              gradient than sigmoidal functions, which tend to saturates on extreme values.
-        \item \textbf{Leaky ReLU} deals with the so-called
-              \textbf{dying ReLU problem}. If we use simple ReLU, many neurons cannot
-              recover from being stuck at zero value. We can tackle the problem by
-              "leaking out" the negative values. The leaked values are then weighted by
-              parameter $\alpha$: $\text{Leaky ReLU}(x) = \max(\alpha x, x)$
-        \item \textbf{Softmax} funciton is typically used in a last layer of
-              classification neural networks. It takes a vector of real numbers and
-              normalizes the values into a probability distribution. For input vector
-              $x \in \real^K$ and output vector $y \in \real^K$, the function is defined
-              as follows:
-              $$
-                  y_i = \text{softmax}(x)_i = \frac{e^{x_i}}{\sum\limits^{K}_{j = 1}
-                      e^{x_j}} \text{ for } i = 1,...,K
-              $$
-    \end{itemize}
+Activation functions introduce non-linearity to the layers. Some of the most
+important ones are listed below:
+\begin{itemize}
+    \item \textbf{ReLU} (rectified linear unit) is the most popular activation
+          function, which was introduced in \cite{pmlr-v15-glorot11a}. It is defined
+          as follows: $\text{ReLU}(x) = \max(0, x)$. It deals better with vanishing
+          gradient than sigmoidal functions, which tend to saturates on extreme values.
+    \item \textbf{Leaky ReLU} deals with the so-called
+          \textbf{dying ReLU problem}. If we use simple ReLU, many neurons cannot
+          recover from being stuck at zero value. We can tackle the problem by
+          "leaking out" the negative values. The leaked values are then weighted by
+          parameter $\alpha$: $\text{Leaky ReLU}(x) = \max(\alpha x, x)$
+    \item \textbf{Softmax} funciton is typically used in a last layer of
+          classification neural networks. It takes a vector of real numbers and
+          normalizes the values into a probability distribution. For input vector
+          $x \in \real^K$ and output vector $y \in \real^K$, the function is defined
+          as follows:
+          $$
+              y_i = \text{softmax}(x)_i = \frac{e^{x_i}}{\sum\limits^{K}_{j = 1}
+                  e^{x_j}} \text{ for } i = 1,...,K
+          $$
+\end{itemize}
 
-    \subsection{Training}
-    \label{sec:training}
-    We find the best weights by minimizing the \bld{loss function} $\mathcal{L(\theta)}$
-    that determines the quality of the model with parameters $\theta$. There are
-    many different loss functions. However, we only describe the most common ones
-    for classification and regression tasks.
+\subsection{Training}
+\label{sec:training}
+We find the best weights by minimizing the \bld{loss function} $\mathcal{L(\theta)}$
+that determines the quality of the model with parameters $\theta$. There are
+many different loss functions. However, we only describe the most common ones
+for classification and regression tasks.
 
-    \subsubsection{Loss functions}
+\subsubsection{Loss functions}
 
-    \bld{Mean squared error (MSE)} is the most commonly used regression loss
-    function. It is an average of squared errors. Error is defined as a difference
-    (or distance) between predicted and actual value. Consider a \bld{dataset} of $n$
-    examples $\mathcal{D} = \{(x_i, a_i)\mid i = 1,...,n\}$ where $x_i$ is the \bld{input}
-    and $a_i$ is the \bld{actual value}. Let $y_i = f^*(x_i; \theta)$ be the \bld{predicted
-        output} of the model based on the input $x_i$ parametrized by the model's weights
+\bld{Mean squared error (MSE)} is the most commonly used regression loss
+function. It is an average of squared errors. Error is defined as a difference
+(or distance) between predicted and actual value. Consider a \bld{dataset} of $n$
+examples $\mathcal{D} = \{(x_i, a_i)\mid i = 1,...,n\}$ where $x_i$ is the \bld{input}
+and $a_i$ is the \bld{actual value}. Let $y_i = f^*(x_i; \theta)$ be the \bld{predicted
+    output} of the model based on the input $x_i$ parametrized by the model's weights
 $\theta$. We can then define MSE of dataset $\mathcal{D}$ as follows:
-    $$
-        \text{MSE}_{\mathcal{D}}(\theta) =
-        \frac{1}{n}\sum\limits^{n}_{i=1}(y_i - a_i)^2
-    $$
-    \bld{Cross-entropy loss (CE)} is widely used for classification tasks. For
-    simplicity, consider a binary classification where the values are either 1 or 0.
-    Consider again the dataset $\mathcal{D}$ and predictions $y_i$. The CE is then
-    defined as:
-    $$
-        \text{CE}_\mathcal{D}(\theta) =
-        -\frac{1}{n}\sum\limits_{n=1}^{n} a_i \log(y_i) + (1-a_i)\log(1-y_i)
-    $$
-    If we look at the model from a statistical point of view, it learns to capture
-    the desired probability distribution of some dataset. So the general intuition
-    behind the CE loss is that it measures the difference between two probability
-    distributions -- the learned distribution and ground-truth distribution. The
-    lower the CE is, the more similar the distributions are. Another more precise
-    mathematical interpretation is that minimizing CE is equivalent to maximizing
-    the model's maximum likelihood.\footnote{Likelihood function measures the
-        goodness of fit of a statistical model to a sample of data for given values
-        of the unknown parameters. Definition borrowed from
-        \url{https://en.wikipedia.org/wiki/Likelihood_function}.
-    } The defined CE can be easily extended for multi-class (or categorical)
-    version.
+$$
+    \text{MSE}_{\mathcal{D}}(\theta) =
+    \frac{1}{n}\sum\limits^{n}_{i=1}(y_i - a_i)^2
+$$
+\bld{Cross-entropy loss (CE)} is widely used for classification tasks. For
+simplicity, consider a binary classification where the values are either 1 or 0.
+Consider again the dataset $\mathcal{D}$ and predictions $y_i$. The CE is then
+defined as:
+$$
+    \text{CE}_\mathcal{D}(\theta) =
+    -\frac{1}{n}\sum\limits_{n=1}^{n} a_i \log(y_i) + (1-a_i)\log(1-y_i)
+$$
+If we look at the model from a statistical point of view, it learns to capture
+the desired probability distribution of some dataset. So the general intuition
+behind the CE loss is that it measures the difference between two probability
+distributions -- the learned distribution and ground-truth distribution. The
+lower the CE is, the more similar the distributions are. Another more precise
+mathematical interpretation is that minimizing CE is equivalent to maximizing
+the model's maximum likelihood.\footnote{Likelihood function measures the
+    goodness of fit of a statistical model to a sample of data for given values
+    of the unknown parameters. Definition borrowed from
+    \url{https://en.wikipedia.org/wiki/Likelihood_function}.
+} The defined CE can be easily extended for multi-class (or categorical)
+version.
 
-    \subsubsection{Learning algorithm}
-    The process of finding the best weights is an \bld{optimization problem}. The
-    goal is to minimize the selected loss function by adjusting the weights
-    accordingly. The most common optimization algorithm used for training neural
-    networks is \bld{gradient descent (GD)} and its derivatives. The idea behind GD
-    is to alter the weights in the \bld{opposite direction of the gradient} of the
-    loss function (the gradient's direction is the steepest ascent) in an iterative
-    way.
+\subsubsection{Learning algorithm}
+The process of finding the best weights is an \bld{optimization problem}. The
+goal is to minimize the selected loss function by adjusting the weights
+accordingly. The most common optimization algorithm used for training neural
+networks is \bld{gradient descent (GD)} and its derivatives. The idea behind GD
+is to alter the weights in the \bld{opposite direction of the gradient} of the
+loss function (the gradient's direction is the steepest ascent) in an iterative
+way.
 
-    Since the dataset $\mathcal{D}$ can be very large, we cannnot compute the
-    gradient straight away. Instead, we sample the prior dataset and update the
-    weights with the sample's gradient. This method is called \bld{stochastic
-        gradient descent (SGD)} and converges faster than GD. The samples are called
-    \bld{minibatches} and they can be processed at once by vectorization. Let us now
-    describe the main variations of SGD.
+Since the dataset $\mathcal{D}$ can be very large, we cannnot compute the
+gradient straight away. Instead, we sample the prior dataset and update the
+weights with the sample's gradient. This method is called \bld{stochastic
+    gradient descent (SGD)} and converges faster than GD. The samples are called
+\bld{minibatches} and they can be processed at once by vectorization. Let us now
+describe the main variations of SGD.
 
-    \bld{Stochastic gradient descent.} Let $\mathcal{B} \subseteq \mathcal{D}$ be
-    the minibatch, $\nabla\mathcal{L_\mathcal{B}(\theta)}$ be the gradient of
+\bld{Stochastic gradient descent.} Let $\mathcal{B} \subseteq \mathcal{D}$ be
+the minibatch, $\nabla\mathcal{L_\mathcal{B}(\theta)}$ be the gradient of
 $\mathcal{L}_\mathcal{B}(\theta)$, and $\theta_t$ denotes the weights in the
-    step $t$ (similarly for other variables). The algorithm can be writen as:
-    $$
-        \begin{array}{rl}
-            \Delta\theta_{t} & = - \epsilon_{t} \cdot \nabla{\mathcal{L}_\mathcal{B}(\theta_{t})} \\
-            \theta_{t+1}     & = \theta_{t} + \Delta\theta_{t}
-        \end{array}
-        \quad \text{ for steps } t = 1,2,...
-    $$
-    The $0 < \epsilon \leq 1$ is called $\bld{learning rate}$ that controls the
-    speed of model's learning. In plain SGD, the $\epsilon_t$ is fixed for every
+step $t$ (similarly for other variables). The algorithm can be writen as:
+$$
+    \begin{array}{rl}
+        \Delta\theta_{t} & = - \epsilon_{t} \cdot \nabla{\mathcal{L}_\mathcal{B}(\theta_{t})} \\
+        \theta_{t+1}     & = \theta_{t} + \Delta\theta_{t}
+    \end{array}
+    \quad \text{ for steps } t = 1,2,...
+$$
+The $0 < \epsilon \leq 1$ is called $\bld{learning rate}$ that controls the
+speed of model's learning. In plain SGD, the $\epsilon_t$ is fixed for every
 $t$. However, naturally, we want the model to learn faster in the beginning and
-    slower as it converges and stabilize. The most straightforward way to do so, is
-    to make use of a learning rate scheduler that alters the $\epsilon$ w.r.t. time.
-    A more robust way is to change the $\epsilon$ in an \bld{adaptive} way. We want
-    to have larger rates for smaller updates and smalelr rates for larger updates.
-    The most common examples of this approach is \bld{AdaGrad} \cite{adagrad},
-    \bld{AdaDelta} \cite{adadelta}, \bld{RMSProp}.\footnote{It was not published.
-        However, it was proposed in a course by Geoff Hinton \url{
-            http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf}
-    }
+slower as it converges and stabilize. The most straightforward way to do so, is
+to make use of a learning rate scheduler that alters the $\epsilon$ w.r.t. time.
+A more robust way is to change the $\epsilon$ in an \bld{adaptive} way. We want
+to have larger rates for smaller updates and smalelr rates for larger updates.
+The most common examples of this approach is \bld{AdaGrad} \cite{adagrad},
+\bld{AdaDelta} \cite{adadelta}, \bld{RMSProp}.\footnote{It was not published.
+    However, it was proposed in a course by Geoff Hinton \url{
+        http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf}
+}
 
-    Another way to speed up the SGD is to stabilize the direction of the descent as
-    it can oscillate. We add a \bld{momentum} to the new weights $\theta_{t+1}$ in
-    the form of the previous update $\Delta\theta_{t-1}$ additionally to the
+Another way to speed up the SGD is to stabilize the direction of the descent as
+it can oscillate. We add a \bld{momentum} to the new weights $\theta_{t+1}$ in
+the form of the previous update $\Delta\theta_{t-1}$ additionally to the
 $\Delta\theta_{t}$. This extension also helps to escape local minima. Finally,
-    we would like to mention that the currently suggested optmization algorithm is
-    \bld{Adam} \cite{adam} that effectively combines the both approaches (adaptive
-    learning rate and momentum).
+we would like to mention that the currently suggested optmization algorithm is
+\bld{Adam} \cite{adam} that effectively combines the both approaches (adaptive
+learning rate and momentum).
 
-    \subsubsection{Backpropagation}
-    Consider $\theta$ to be composed of $m$ weights $\theta = (w_1, w_2, ..., w_m)$.
-    Let us simplify the notation for $\loss_\mathcal{D}(\theta) = \loss$. Then the
-    gradient is computed as:
-    $$
-        \grad = \left(\pd{1}, \pd{2}, ..., \pd{m}\right)
-    $$
-    where $\partial \loss / \partial w_i$ is a partial derivative of $\loss$ with
-    respect to $w_i$. Recall that the networks can be represented as a function
-    composition. Computing the gradients naively by the definition for every $w_i$
-    is very inefficient as it results in many recomputations due to the chain rule
-    of derivatives. The \bld{backpropagation} algorithm \cite{backprop} computes the
-    gradient effectively by computing the gradient backward from the last layer in
-    the network iteratively layer by layer. This way the recurring subexpressions in
-    the chain rule are already precomputed.\footnote{This is in fact an example of a
-        dynamic programming.}
+\subsubsection{Backpropagation}
+Consider $\theta$ to be composed of $m$ weights $\theta = (w_1, w_2, ..., w_m)$.
+Let us simplify the notation for $\loss_\mathcal{D}(\theta) = \loss$. Then the
+gradient is computed as:
+$$
+    \grad = \left(\pd{1}, \pd{2}, ..., \pd{m}\right)
+$$
+where $\partial \loss / \partial w_i$ is a partial derivative of $\loss$ with
+respect to $w_i$. Recall that the networks can be represented as a function
+composition. Computing the gradients naively by the definition for every $w_i$
+is very inefficient as it results in many recomputations due to the chain rule
+of derivatives. The \bld{backpropagation} algorithm \cite{backprop} computes the
+gradient effectively by computing the gradient backward from the last layer in
+the network iteratively layer by layer. This way the recurring subexpressions in
+the chain rule are already precomputed.\footnote{This is in fact an example of a
+    dynamic programming.}
 
-    % can visualize such a composition as a computational graph (see Figure). The
-    % computation of gradient as it is defined is very inefficient because of
-    % recurring subexpressions. Let us demonstrate the problem on a simplified graph
-    % in Figure . Let $a \in \real$ be an input of the graph, a function we apply at
-    % every step $f: \real \to \real$ of the sequence $b=f(a)$, $c=f(b)$, and
-    % $d=f(c)$.
-    % \[\arraycolsep=1.4pt\def\arraystretch{2.2}
-    %     \begin{array}{rl}
-    %         \grad  & = \left(\pd{1}, \pd{2}, ..., \pd{m}\right)                   \\
-    %         \pd{i} & = \mathlarger{\sum\limits_{(x_j, a_j) \in \mathcal{D}}} \pdj 
-    %         \quad \text{where } \loss_j \text{ is loss function for }
-    %     \end{array}
-    % \]
+% can visualize such a composition as a computational graph (see Figure). The
+% computation of gradient as it is defined is very inefficient because of
+% recurring subexpressions. Let us demonstrate the problem on a simplified graph
+% in Figure . Let $a \in \real$ be an input of the graph, a function we apply at
+% every step $f: \real \to \real$ of the sequence $b=f(a)$, $c=f(b)$, and
+% $d=f(c)$.
+% \[\arraycolsep=1.4pt\def\arraystretch{2.2}
+%     \begin{array}{rl}
+%         \grad  & = \left(\pd{1}, \pd{2}, ..., \pd{m}\right)                   \\
+%         \pd{i} & = \mathlarger{\sum\limits_{(x_j, a_j) \in \mathcal{D}}} \pdj 
+%         \quad \text{where } \loss_j \text{ is loss function for }
+%     \end{array}
+% \]
 
-    % \centering
-    % \begin{tikzpicture}[auto]
-    %     \tikzset{vertex/.style = {shape=circle,draw,minimum size=1.5em}}
-    %     \tikzset{edge/.style = {->,> = latex'}}
-    %     % vertices
-    %     \node[vertex] (1) at  (0,0) {$w_1$};
-    %     \node[vertex] (2) at  (2,0) {$w_2$};
-    %     \node[vertex] (3) at  (4,0) {$w_3$};
-    %     \node (4) at  (6,0) {$\loss$};
-    %     %edges
-    %     \draw[edge] (1) to (2);
-    %     \draw[edge] (2) to (3);
-    %     \draw[edge] (3) to (4);
-    % \end{tikzpicture}
-    % \[\arraycolsep=1.4pt\def\arraystretch{2.2}
-    %     \begin{array}{rl}
-    %         \pd{3} & = ...                   \\
-    %         \pd{2} & = \pd{3} \prt{w_3}{w_2} \\
-    %         \pd{1} & = \pd{2} \prt{w_2}{w_1}
-    %     \end{array}
-    % \]
+% \centering
+% \begin{tikzpicture}[auto]
+%     \tikzset{vertex/.style = {shape=circle,draw,minimum size=1.5em}}
+%     \tikzset{edge/.style = {->,> = latex'}}
+%     % vertices
+%     \node[vertex] (1) at  (0,0) {$w_1$};
+%     \node[vertex] (2) at  (2,0) {$w_2$};
+%     \node[vertex] (3) at  (4,0) {$w_3$};
+%     \node (4) at  (6,0) {$\loss$};
+%     %edges
+%     \draw[edge] (1) to (2);
+%     \draw[edge] (2) to (3);
+%     \draw[edge] (3) to (4);
+% \end{tikzpicture}
+% \[\arraycolsep=1.4pt\def\arraystretch{2.2}
+%     \begin{array}{rl}
+%         \pd{3} & = ...                   \\
+%         \pd{2} & = \pd{3} \prt{w_3}{w_2} \\
+%         \pd{1} & = \pd{2} \prt{w_2}{w_1}
+%     \end{array}
+% \]
 
-    % consists of partial derivatives $\pderivative$ for every $w_i$. Each
-    % $\pderivative$ is computed as
-    % $\pderivative = \sum\limits_{j=1}^{\lvert\mathcal{B}\rvert}$.
+% consists of partial derivatives $\pderivative$ for every $w_i$. Each
+% $\pderivative$ is computed as
+% $\pderivative = \sum\limits_{j=1}^{\lvert\mathcal{B}\rvert}$.
 
-    \subsection{Overfitting and underfitting}
+\subsection{Overfitting and underfitting}
 
-    When we train a machine learning model, we typically have a
-    \textbf{training set} and a \textbf{test set}. We then fit the model's
-    parameters on a training set to \textbf{minimize} an error measure
-    (a \textbf{training loss} or \textbf{error}). However, at the same time, we want
-    to minimize a \textbf{test error} as well. We say that a model should
-    \textbf{generalize}. This means that it should perform well on unseen data.
+When we train a machine learning model, we typically have a
+\textbf{training set} and a \textbf{test set}. We then fit the model's
+parameters on a training set to \textbf{minimize} an error measure
+(a \textbf{training loss} or \textbf{error}). However, at the same time, we want
+to minimize a \textbf{test error} as well. We say that a model should
+\textbf{generalize}. This means that it should perform well on unseen data.
 
-    These efforts can lead to two major problems in machine learning. If we train
-    for too long, the model will learn the training set patterns that do not
-    generalize to the test set. We say that the model \textbf{overfits}. The
-    opposite of overfitting is \textbf{underfitting}. It occurs when the model is
-    not able to gain sufficiently low training loss. Underfitting can happen because
-    of using a weak model or not training long enough. If we plot the losses, we
-    want to make sure that the training loss is reasonably low, and the gap between
-    training and test error is small (see \myref{Figure}{fig:loss_plot}).
+These efforts can lead to two major problems in machine learning. If we train
+for too long, the model will learn the training set patterns that do not
+generalize to the test set. We say that the model \textbf{overfits}. The
+opposite of overfitting is \textbf{underfitting}. It occurs when the model is
+not able to gain sufficiently low training loss. Underfitting can happen because
+of using a weak model or not training long enough. If we plot the losses, we
+want to make sure that the training loss is reasonably low, and the gap between
+training and test error is small (see \myref{Figure}{fig:loss_plot}).
 
-    \begin{figure}[h]
-        \centering
-        \includegraphics[width=\linewidth]{Sources/Figures/fitting.png}
-        \caption{A simplified cases of loss curves showing:
-            (A) Underfitting, (B) Overfitting and (C) Optimal fit where validation
-            set is unobserved data. Taken from
-            \cite{bileschi2020deep}.}
-        \label{fig:loss_plot}
-    \end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{Sources/Figures/fitting.png}
+    \caption{A simplified cases of loss curves showing:
+        (A) Underfitting, (B) Overfitting and (C) Optimal fit where validation
+        set is unobserved data. Taken from
+        \cite{bileschi2020deep}.}
+    \label{fig:loss_plot}
+\end{figure}
 
-    In coming subsections we describe the most common techniques to prevent
-    overfitting in neural networks.
+In coming subsections we describe the most common techniques to prevent
+overfitting in neural networks.
 
-    \subsubsection{$L_2$ Regularization}
-    Following the Occam's razor principle,\footnote{The simplest explanation is most
-        likely the right one.} the extreme weights are likely to cause overfitting. We
-    can reduce the overfitting by penalizing these weights with $\boldsymbol{L_2}$
-    \textbf{regularization}. The penalization is performed by adding a $L_2$ term to
+\subsubsection{$L_2$ Regularization}
+Following the Occam's razor principle,\footnote{The simplest explanation is most
+    likely the right one.} the extreme weights are likely to cause overfitting. We
+can reduce the overfitting by penalizing these weights with $\boldsymbol{L_2}$
+\textbf{regularization}. The penalization is performed by adding a $L_2$ term to
 the loss function. The term is defined as a sum of squares of weight values.
 
 \subsubsection{Dropout}
