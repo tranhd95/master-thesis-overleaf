@@ -196,7 +196,7 @@ unsupervised pre-training of deep feedforward neural networks
 \cite{hinton2006reducing}. Using this method on a deep belief network
 \cite{DBN}, the model achieved 1.2\% error rate on the MNIST classification
 dataset \cite{hinton2006fast, mnist}. This exceptional result drew attention
-to deep neural networks. The detailed historical development of artificial
+to deep neural networks. More detailed historical development of artificial
 neural networks and deep learning is nicely overviewed in a journal article by
 another important figure in the field -- Juergen Schmidhuber
 \cite{DBLP:journals/corr/Schmidhuber14}.
@@ -220,8 +220,8 @@ $$
     f^*(x) = (f^{(n)} \circ f^{(n-1)} \circ ... \circ f^{(2)} \circ f^{(1)})(x).
 $$
 As we can see, the information flows sequentially in the network; thus, it is
-called feedforward. Each of the function $f^{(i)}$ is called \bld{layer}. The
-deep learning models are composed of many different layers. We say that the
+called feedforward network. Each of the function $f^{(i)}$ is called \bld{layer}.
+The deep learning models are composed of many different layers. We say that the
 network is deep; hence, the name \bld{deep learning}. In the next sections, we
 describe different types of layers.
 
@@ -304,8 +304,8 @@ in practice, we often work with RGB or even RGB-D images represented by
 three for classic RGB image).
 
 Another important parameter of the layer is \textbf{stride length}. It defines
-the number of pixels the filters shifts over the input image. The bigger is
-stride length the more downscaled the output image is.
+the number of pixels the filters shifts over the input image. The bigger the
+stride length is the more downscaled the output image is.
 
 \begin{figure}[h]
     \centering
@@ -345,7 +345,7 @@ important ones are listed below:
           recover from being stuck at zero value. We can tackle the problem by
           "leaking out" the negative values. The leaked values are then weighted by
           parameter $\alpha$: $\text{Leaky ReLU}(x) = \max(\alpha x, x)$
-    \item \textbf{Softmax} funciton is typically used in a last layer of
+    \item \textbf{Softmax} funciton is typically used in the last layer of
           classification neural networks. It takes a vector of real numbers and
           normalizes the values into a probability distribution. For input vector
           $x \in \real^K$ and output vector $y \in \real^K$, the function is defined
@@ -384,7 +384,7 @@ $$
     \text{CE}_\mathcal{D}(\theta) =
     -\frac{1}{n}\sum\limits_{n=1}^{n} a_i \log(y_i) + (1-a_i)\log(1-y_i)
 $$
-If we look at the model from a statistical point of view, it learns to capture
+From a statistical point of view, the model learns to capture
 the desired probability distribution of some dataset. So the general intuition
 behind the CE loss is that it measures the difference between two probability
 distributions -- the learned distribution and ground-truth distribution. The
@@ -398,7 +398,7 @@ the model's maximum likelihood.\footnote{Likelihood function measures the
 version.
 
 \subsubsection{Learning algorithm}
-The process of finding the best weights is an \bld{optimization problem}. The
+The search of the best weights can be reduced to an \bld{optimization problem}. The
 goal is to minimize the selected loss function by adjusting the weights
 accordingly. The most common optimization algorithm used for training neural
 networks is \bld{gradient descent (GD)} and its derivatives. The idea behind GD
@@ -427,11 +427,11 @@ $$
 The $0 < \epsilon \leq 1$ is called $\bld{learning rate}$ that controls the
 speed of model's learning. In plain SGD, the $\epsilon_t$ is fixed for every
 $t$. However, naturally, we want the model to learn faster in the beginning and
-slower as it converges and stabilize. The most straightforward way to do so, is
+slower as it converges and stabilizes. The most straightforward way to do so, is
 to make use of a learning rate scheduler that alters the $\epsilon$ w.r.t. time.
 A more robust way is to change the $\epsilon$ in an \bld{adaptive} way. We want
 to have larger rates for smaller updates and smalelr rates for larger updates.
-The most common examples of this approach is \bld{AdaGrad} \cite{adagrad},
+The most common examples of this approach are \bld{AdaGrad} \cite{adagrad},
 \bld{AdaDelta} \cite{adadelta}, \bld{RMSProp}.\footnote{It was not published.
     However, it was proposed in a course by Geoff Hinton \url{
         http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf}
