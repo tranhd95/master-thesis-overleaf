@@ -1,35 +1,35 @@
 \chapter{Conclusion}\label{chap:conclusion}
 
-One of the thesis's goals was to conduct research and evaluate state-of-the-art
+One of the thesis' goals was to conduct research and evaluate state-of-the-art
 deep learning object detection models on real-world datasets provided by the
-company SANEZOO EUROPE. We have chosen the well-known model Faster R-CNN as a
+company SANEZOO EUROPE. We chose the well-known model Faster R-CNN as a
 baseline. The next selected model is Cascade R-CNN, which is an extension to the
 Faster R-CNN. Both models represent a family of detectors called two-stage
-detectors. Finally, we have chosen a representative of one-stage detectors --
+detectors. Finally, we chose a representative of one-stage detectors --
 RetinaNet.
 
 At the beginning of the work, we introduced the object detection task's aim and
 how to measure the object detection models' performance. We briefly described
 the benefits of the deep learning approach compared to the traditional methods.
-Afterward, we reviewed the main concepts of deep neural networks. Then we have
+Afterward, we reviewed the main concepts of deep neural networks. Then, we
 described the model architectures with emphasis on understandability by
 gradually introducing new building blocks of the detectors.
 
-Next, we have introduced the provided datasets. Unfortunately, since the
+Next, we introduced the provided datasets. Unfortunately, since the
 datasets consist mainly of the company's customer products, only one dataset
 could be published. However, we provided illustrations and detailed
-characteristics. Based on the prior results, we have set the hypotheses about
-the performance of our models. Afterward, we have described the training
-process and its details. We have discussed the evaluation results dataset by
+characteristics of all datasets. Based on the prior results, we set the hypotheses about
+the performance of our models. Afterward, we described the training
+process and its details. We discussed the evaluation results dataset by
 dataset and eventually summed up the results at the end of Chapter 4.
 
-For the purpose of future evaluations on different datasets, we have developed
-a simple benchmarking tool with a web GUI. We have created a Python API built
+For the purpose of future evaluations on different datasets, we developed
+a simple benchmarking tool with a web GUI. We created a Python API built
 upon the scripts we had used for our experiments. The tool provides an
 interactive way for training and evaluating arbitrary object detection dataset.
 
 \section{Future Work}
-We have intentionally chosen models that are well-established and had stable
+We intentionally chosen models that are well-established and had stable
 implementations. However, the field of deep learning advances rapidly and we
 would like to mention very recent models which we think deserve attention. The
 first model, called EfficientDet \cite{efficientdet}, was proposed last year by
@@ -60,19 +60,19 @@ functionalities, such as selecting datasets, models, and the training process.
 It can be seen as a functional proof-of-concept or a foundation application that
 can be further expanded. We list possible extensions below:
 \begin{itemize}
-    \item Accept more dataset formats such as COCO, VOC, or YOLO dataset format.
-    \item Add more models and their settings.
-    \item Add more options to change parameters.
-    \item Add more control during the training process. The current state does
-          not allow any interaction with the training process. It would be
-          plausible if the user could pause and resume the training process.
-    \item Related to the previous proposal; the user should have clear feedback
-          about the training process. The tool should include visualization of
-          the losses, e.g., by integrating Tensorboard\footnote{
-              Tensorboard is a visualization kit. See
-              \url{https://tensorboard.dev/}.
-          }.
-    \item For a long-term goal, it would make sense to separate the evaluation
-          component that would serve for evaluating models trained outside the
-          tool.
+      \item Accept more dataset formats such as COCO, VOC, or YOLO dataset format.
+      \item Add more models and their settings.
+      \item Add more options to change parameters.
+      \item Add more control during the training process. The current state does
+            not allow any interaction with the training process. It would be
+            plausible if the user could pause and resume the training process.
+      \item Related to the previous proposal; the user should have clear feedback
+            about the training process. The tool should include visualization of
+            the losses, e.g., by integrating Tensorboard\footnote{
+                  Tensorboard is a visualization kit. See
+                  \url{https://tensorboard.dev/}.
+            }.
+      \item For a long-term goal, it would make sense to separate the evaluation
+            component that would serve for evaluating models trained outside the
+            tool.
 \end{itemize}
