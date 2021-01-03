@@ -44,8 +44,8 @@ all the necessary information).
 The frontend communicates with the backend through the HTTP \bld{application
     programming interface (API)} composed of \bld{uniform resource identifier
     (URI)}
-endpoints. The API will consist mainly GET and POST requests. For example, if we
-would like to retrieve a list of datasets, we would send a GET request to a URI
+endpoints. The API will consist mainly GET and POST requests. For example, to
+retrieve a list of datasets, we would send a GET request to a URI
 of the form similar to \texttt{<api\_address>/datasets}. The POST requests will
 be mainly used for setting up the training details and initiating the training
 process. See \myref{Figure}{fig:tool_design} for an illustration of the communication.
@@ -102,7 +102,7 @@ structure and formats. On top of that, it shows the destination folder where the
 user should upload the dataset. The next step serves for the selection of the
 available datasets. It automatically lists all datasets that are correctly
 uploaded. The datasets that are detected but are of the wrong format or miss
-some necessary details can not be chosen. Besides that, an appropriate warning
+some necessary details cannot be chosen. Besides that, an appropriate warning
 is shown to the user. All available datasets are shown in a list with additional
 information such as the size of the dataset or the number of classes it consists
 of (see \myref{Figure}{fig:datasets_selection}). By clicking on one of the list's
