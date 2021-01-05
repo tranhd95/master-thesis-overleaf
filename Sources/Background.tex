@@ -13,7 +13,7 @@ down into three steps: \bld{informative region selection},
 \bld{feature extraction}, and \bld{classification}. In the first step, the
 method has to determine regions to which we apply the feature extraction. The
 feature extractor outputs a semantic numerical representation for each selected
-region is then used to predict the target's class. Note that these steps are
+region which is then used to predict the target's class. Note that these steps are
 not fixed and the pipeline can vary.
 
 \begin{figure}[h]
@@ -62,7 +62,7 @@ these metrics. If we increase the precision (e.g., by setting more strict
 constraints for assigning TP to a prediction), the recall decreases as there
 would be more FN cases, and vice versa.
 
-For an object detection model evaluation, we can suppose that TP represents
+For an object detection model evaluation, we can consider that TP represents
 correctly detected object. Similarly, FP can be viewed as a wrongly detected
 object or duplicate detection. We would like to combine the precision and recall
 to a single composite score -- \bld{mean average precision (mAP)}. However,
@@ -153,7 +153,7 @@ $$
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{Sources/Figures/precisionrecall.png}
-    \caption{Precision-recall curves.}
+    \caption{Precision-recall curves of the values in the \autoref{tab:ap}.}
     \label{fig:precisionrecall}
 \end{figure}
 
@@ -194,7 +194,7 @@ become a trendy area of machine learning research
 \cite{DBLP:journals/corr/Schmidhuber14}. That year, Hinton et al. introduced
 unsupervised pre-training of deep feedforward neural networks
 \cite{hinton2006reducing}. Using this method on a deep belief network
-\cite{DBN}, the model achieved 1.2\% error rate on the MNIST classification
+\cite{DBN}, they achieved 1.2\% error rate on the MNIST classification
 dataset \cite{hinton2006fast, mnist}. This exceptional result drew attention
 to deep neural networks. More detailed historical development of artificial
 neural networks and deep learning is nicely overviewed in a journal article by
@@ -206,15 +206,15 @@ The fundamental model of deep learning is a \bld{deep feedforward network}, also
 known as feedforward neural networks, or multilayer perceptrons. Feedforward
 networks approximate arbitrary functions of the form $y = f^*(x;\theta)$, where
 $y$ is the \bld{output}, $x$ is the \bld{input}, and $\theta$ are the network's
-\bld{weights} (or parameters). For example, in our case, we would like to
+\bld{weights} (or \bld{parameters}). For example, in our case, we would like to
 output the list of objects with their respective coordinates and classes based
 on the input image. The process of finding the best weights $\theta$ for
-accurate approximation is called \bld{training} (or we also say that the network
-\bld{learns}). We describe this process in detail in
+accurate approximation of the function is called \bld{training} (or we also say 
+that the network \bld{learns}). We describe this process in detail in
 \myref{Section}{sec:training}.
 
 The network $f^*$ is composed of intermediate computations that are defined by
-some function $f^{(i)}$. We might write the approximated function as a function
+some functions $f^{(i)}$. We might write the approximated function as a function
 composition of $n$ functions:
 $$
     f^*(x) = (f^{(n)} \circ f^{(n-1)} \circ ... \circ f^{(2)} \circ f^{(1)})(x).
@@ -264,14 +264,14 @@ architectures and is more suited for image processing tasks. To illustrate the
 convolution layer, imagine the input as a square of neurons, i.e., a
 two-dimensional \bld{image} $I(x,y)$ which returns the output of $x,y$-th neuron
 (pixel). The maximum values of $x$ and $y$ are the image's width and height.
-We denote them as $I_w \in \mathds{Z}$ and $I_h \in \mathds{Z}$.
+We denote them as $I_w \in \mathds{Z}$ and $I_h \in \mathds{Z}$ respectively.
 
 
 In contrast with a fully-connected layer, we do not connect every input neuron
 to every output neuron. Instead, every output neuron is associated with a
 smaller region in the input image. Each association is defined by its
 \bld{bias} $b$ and \bld{weight matrix} $K$ of shape $K_w \times K_h$.
-We denote $K(k, l)$ as the $k,j$-th element of the matrix. The output of the layer
+We denote $K(k, l)$ as the $k,l$-th element of the matrix. The output of the layer
 is a downscaled image $Y(i,j)$ that is often referred to as the \bld{feature map}.
 The image is downscaled to size $(I_w - K_w + 1) \times (I_h - K_h + 1$).
     The value of the $i, j$-th output neuron $Y(i,j)$ is defined by:
@@ -330,7 +330,7 @@ region's shape is typically 2 $\times$ 2. In some cases, we want to
 pool from the whole input. We call these operations \textbf{global poolings}
 (e.g., global max pooling).
 
-\subsubsection{Activation Functions}
+\subsection{Activation Functions}
 \label{afunctions}
 
 Activation functions introduce non-linearity to the layers. Some of the most
@@ -347,12 +347,12 @@ important ones are listed below:
           parameter $\alpha$: $\text{Leaky ReLU}(x) = \max(\alpha x, x)$
     \item \textbf{Softmax} funciton is typically used in the last layer of
           classification neural networks. It takes a vector of real numbers and
-          normalizes the values into a probability distribution. For input vector
-          $x \in \real^K$ and output vector $y \in \real^K$, the function is defined
+          normalizes the values into a probability distribution. Consider the number of classes $K$, 
+          input vector$x \in \real^K$ and output vector $y \in \real^K$, the function is defined
           as follows:
           $$
-              y_i = \text{softmax}(x)_i = \frac{e^{x_i}}{\sum\limits^{K}_{j = 1}
-                  e^{x_j}} \text{ for } i = 1,...,K
+              y_i = \text{softmax}(x)_i = \frac{e^{x_i}}{\sum\limits^{C}_{j = 1}
+                  e^{x_j}} \text{ for } i = 1,...,C
           $$
 \end{itemize}
 
@@ -503,13 +503,11 @@ the chain rule are already precomputed.\footnote{This is in fact an example of a
 % $\pderivative = \sum\limits_{j=1}^{\lvert\mathcal{B}\rvert}$.
 
 \subsection{Overfitting and underfitting}
-
-When we train a machine learning model, we typically have a
-\textbf{training set} and a \textbf{test set}. We then fit the model's
-parameters on a training set to \textbf{minimize} an error measure
-(a \textbf{training loss} or \textbf{error}). However, at the same time, we want
-to minimize a \textbf{test error} as well. We say that a model should
-\textbf{generalize}. This means that it should perform well on unseen data.
+When we train a machine learning model, we typically have a \bld{training set} 
+and a \bld{test set}. We train the model by minimizing the loss function of the 
+training set. However, at the same time, we want to minimize the loss function of 
+the test set. We say that the model should \bld{generalize} well. This means 
+that it should perform well on \bld{unseen data}.
 
 These efforts can lead to two major problems in machine learning. If we train
 for too long, the model will learn the training set patterns that do not
@@ -530,7 +528,7 @@ training and test error is small (see \myref{Figure}{fig:loss_plot}).
     \label{fig:loss_plot}
 \end{figure}
 
-In coming subsections we describe the most common techniques to prevent
+In following subsections we describe the most common techniques to prevent
 overfitting in neural networks.
 
 \subsubsection{$L_2$ Regularization}
@@ -563,7 +561,6 @@ course, it is impossible to adopt this approach to every type of datasets, but
 it is straightforward for object detection tasks. The simplest way to augment
 the image dataset is by adding \textbf{random transformations} (cropping,
 resizing, rotation, ...) of the original images. The more sophisticated method
-would be generating new \textbf{synthetic} images. With recent advances in
-generative adversarial networks (GANs), it is possible to synthesize
-high-quality images. An impressive adoption of this approach is proposed in
-\cite{wei2019generative}.
+would be to generate new \textbf{synthetic} images. With recent advances in
+generative adversarial networks (GANs) \cite{gan}, it is possible to synthesize
+high-quality images as in \cite{wei2019generative}.
