@@ -174,7 +174,7 @@ the network outputs top $n$ proposals ($n = 2000$ in original paper).
 Once we have proposals of different sizes and ratios, we need to convert
 maps to their corresponding features to fixed-size feature maps because the
 fully-connected network has a fixed-length input by definition. The conversion
-is done by RoI pooling layer that takes the input proposals and outputs
+is done by \bld{RoI pooling layer} that takes the input proposals and outputs
 fixed-size feature maps.  For every input proposal, crop the corresponding
 section in the input feature map. If we need a $w \times h$ output feature
 map, we equally divide the section into $w \times h$ blocks. We then apply
@@ -208,7 +208,7 @@ to 0.5. The component's architecture is visualized in \myref{Figure}{fig:rcnn}.
 \section{Cascade R-CNN}
 As we mentioned in the previous section, Faster R-CNN is trained with a
 relatively small IoU threshold value. Such a low threshold value produces many
-noisy detections. However, setting a higher value would cause the detector
+\bld{noisy detections}. However, setting a higher value would cause the detector
 to miss a lot of objects. This problem is addressed by an architecture
 proposed in 2017 by Cai et al. \cite{cascadercnn}. They observed that the
 output of a detector trained with a certain IoU threshold is a good set
@@ -245,7 +245,7 @@ ResNet with FPN extension. Every FPN pyramid level is then connected to two
 subnetworks: a class prediction subnetwork and a bounding box regression
 subnetwork. These subnetworks are \bld{fully-convolutional}. That means
 they do not contain any fully-connected layers, making it possible to feed
-in variable inputs. See \myref{Figure}{fig:retinanet} for an illustration
+in inputs of variable size. See \myref{Figure}{fig:retinanet} for an illustration
 of the architecture.
 
 \begin{figure}[h]
